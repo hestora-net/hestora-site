@@ -1384,5 +1384,10 @@ function acceptCookies(){try{localStorage.setItem("hestora-cookie-ok","1")}catch
 (function(){var tip=document.createElement("div");tip.className="partner-tip-float";tip.style.cssText="position:fixed;z-index:500;background:#fff;color:#1A1A1A;font-family:Inter,sans-serif;font-size:13px;line-height:1.6;padding:16px 18px;border-radius:12px;width:320px;max-width:90vw;box-shadow:0 16px 40px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .18s;text-align:left";document.body.appendChild(tip);var hideT;function show(t){var s=t.querySelector(".partner-tip");if(!s)return;tip.innerHTML=s.innerHTML;var r=t.getBoundingClientRect();tip.style.transform="none";tip.style.left="0px";tip.style.top="0px";tip.style.opacity="0";var tw=tip.offsetWidth,th=tip.offsetHeight;var left=r.left+r.width/2-tw/2;left=Math.max(12,Math.min(left,window.innerWidth-tw-12));var top=r.top-th-14;if(top<12){top=r.bottom+14;}if(top+th>window.innerHeight-12){top=Math.max(12,window.innerHeight-th-12);}tip.style.left=left+"px";tip.style.top=top+"px";clearTimeout(hideT);tip.style.opacity="1";}function hide(){hideT=setTimeout(function(){tip.style.opacity="0";},60);}document.querySelectorAll(".partner-tile").forEach(function(t){t.addEventListener("mouseenter",function(){show(t);});t.addEventListener("mouseleave",hide);t.addEventListener("focusin",function(){show(t);});t.addEventListener("focusout",hide);});})();
 </script>
 <script src="assets/consent.js" defer></script>
+<!-- Cloudflare Web Analytics. Same site + token as before the Netlify move: until 2026-08 the
+     Cloudflare proxy injected this automatically; Netlify does not, so it is committed here.
+     Cookieless RUM beacon - no consent needed, distinct from the Clarity loading in consent.js.
+     Dashboard: dash.cloudflare.com -> Analytics and Logs -> Web Analytics. -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "0e5705b38b08455d9a433f5b9cb322c2"}'></script>
 </body>
 </html>
