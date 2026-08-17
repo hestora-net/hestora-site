@@ -220,9 +220,11 @@ footer a{color:#8fd3bf}
 
       panel.innerHTML =
         '<div class="dl-title">Where should we send the ' + esc(label) + '?</div>' +
-        '<p class="dl-sub">Your name and email, and it opens straight away. We use them to send ' +
-        'you the document and to record which documents you have asked for &mdash; nothing else, ' +
-        'unless you tick the box. See our <a href="/privacy">Privacy Policy</a>.</p>' +
+        /* Keep this to one line. The detail of what we record lives in the Privacy
+           Policy, which is what it is for -- restating it here made the panel look
+           heavier than the two fields inside it. */
+        '<p class="dl-sub">Just your name and email &mdash; it opens straight away. ' +
+        'See our <a href="/privacy">Privacy Policy</a>.</p>' +
         '<iframe class="dl-frame" title="Get the ' + esc(label) + '" src="' + esc(src) + '"></iframe>' +
         '<button type="button" class="dl-cancel">Cancel</button>';
       panel.classList.add('open');
