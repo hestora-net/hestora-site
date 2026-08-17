@@ -147,124 +147,225 @@ footer a{color:#8fd3bf}
 <footer>© 2026 Hestora Limited · Company No. 16856062 · Registered in England &amp; Wales · <a href="privacy.html">Privacy Policy</a> · <a href="cookies.html">Cookie Policy</a></footer>
 <script>
 /* ── Gated document downloads ──────────────────────────────────────────────
-   Clicking a document opens a two-field form (name + email) in place; on a
-   successful capture the document opens and the lead lands in the CRM tagged
-   with which document it was, so "who took what" is answerable.
+   First document: a two-field form (name + email) opens in place. After that
+   we know the visitor, so every later document opens immediately and is
+   recorded against them in the background -- asked once, still attributed.
+
+   Who remembers what, and why it is split:
+     - Chilli Pepper's form remembers the name and email, in its own storage on
+       its own origin. It has to be that way round: this page cannot read or
+       pre-fill a cross-origin iframe, and putting a name and email in the
+       iframe URL instead would leak personal data into browser history and
+       server logs.
+     - This page remembers only a yes/no "we have their details" flag, which is
+       all it needs to decide between the two routes.
+   The two can fall out of step (Safari may drop third-party storage while our
+   own flag survives). The form says so with cp-lead-needs-details, and we show
+   the form again rather than silently failing to record.
 
    Progressive enhancement, deliberately: the buttons are real <a href> links
    to the PDFs and work with JavaScript off. We intercept the click instead of
    replacing the link.
 
    This is a SOFT gate and cannot be anything else on a static site -- the PDFs
-   sit at public URLs, so anyone can copy the link and skip the form. That is
-   the accepted trade: it captures the willing majority without an auth layer,
-   and it never blocks a determined reader. Making it a hard gate would mean
-   serving the files through a function that checks a token.
-
-   The form is the hosted Chilli Pepper one in compact mode, which brings its
-   own bot check and writes straight to the CRM. We create the iframe only on
-   click, so nobody who merely reads this page loads a third-party frame or
-   picks up its cookies. */
+   sit at public URLs, so anyone can copy a link and skip the form. That is the
+   accepted trade: it captures the willing majority without an auth layer, and
+   never blocks a determined reader. A hard gate would mean serving the files
+   through a function that checks a token. */
 (function () {
   var FORM = 'https://chillipepper.online/lead-form.html';
   var KEY = 'fd0ec135-56c9-47c8-9dec-5d2369788988';   /* public lead-capture key, submit-only */
-  var open = null;   /* the panel currently showing, so only one is ever open */
+  var KNOWN_FLAG = 'hestora-resources-known';
+  var ORIGIN_RE = /^https:\/\/([a-z0-9-]+\.)?chillipepper\.online$/i;
+
+  var visible = null;   /* the panel currently showing a form, if any */
+  var frames = [];      /* live iframes, so a message can be matched to its own */
+
+  /* Recorder iframes go here rather than inside a display:none panel, so there
+     is no doubt about whether the browser runs them. */
+  var attic = document.createElement('div');
+  attic.setAttribute('aria-hidden', 'true');
+  attic.style.cssText = 'position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden';
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
+  function isKnown() { try { return localStorage.getItem(KNOWN_FLAG) === '1'; } catch (e) { return false; } }
+  function setKnown() { try { localStorage.setItem(KNOWN_FLAG, '1'); } catch (e) {} }
+  function forgetKnown() { try { localStorage.removeItem(KNOWN_FLAG); } catch (e) {} }
 
-  function close(panel) {
-    if (!panel) return;
-    panel.classList.remove('open');
-    panel.innerHTML = '';           /* drop the iframe so it stops running */
-    if (open === panel) open = null;
+  function url(label, auto) {
+    return FORM + '?key=' + encodeURIComponent(KEY) +
+      '&compact=1&cta=download&consent=1&remember=1' +
+      (auto ? '&auto=1' : '') +
+      '&source=' + encodeURIComponent('Resources — ' + label);
   }
 
-  /* Success: swap the form out for a confirmation plus a real link.
-     We do NOT try to open the PDF from script here -- this runs in a
-     postMessage handler, not a click, so a popup blocker would eat it. The
-     link is a genuine user gesture and always works. */
-  function succeed(panel, href, label) {
-    var a = panel.previousElementSibling;
-    panel.innerHTML =
-      '<p class="dl-done"><strong>Thank you.</strong> Your copy of the ' + esc(label) +
-      ' is ready.</p><a class="dl-open" href="' + esc(href) + '" target="_blank" rel="noopener">Open the document</a>';
-    var link = panel.querySelector('.dl-open');
-    if (link) link.focus();
-    if (a) a.setAttribute('data-captured', '1');
+  function forget(frame) {
+    frames = frames.filter(function (f) { return f.frame !== frame; });
+  }
+
+  function closePanel(panel) {
+    if (!panel) return;
+    var f = panel.querySelector('iframe');
+    if (f) forget(f);
+    panel.classList.remove('open');
+    panel.innerHTML = '';
+    if (visible === panel) visible = null;
+  }
+
+  /* Confirmation plus a real link. We do not open the PDF from script here --
+     this runs in a postMessage handler, not a click, so a popup blocker would
+     swallow it. The link is a genuine gesture and always works. */
+  function showDone(item, opened) {
+    closePanel(item.panel);
+    item.panel.innerHTML =
+      '<p class="dl-done"><strong>Thank you.</strong> Your copy of the ' + esc(item.label) +
+      (opened ? ' is opening in a new tab.' : ' is ready.') + '</p>' +
+      '<a class="dl-open" href="' + esc(item.href) + '" target="_blank" rel="noopener">Open the document</a>';
+    item.panel.classList.add('open');
+    var link = item.panel.querySelector('.dl-open');
+    if (link && !opened) link.focus();
+    item.a.setAttribute('data-captured', '1');
+  }
+
+  /* Known visitor: the document is already opening, so all that is left is to
+     log which one against them. No UI -- the form submits itself. */
+  function record(item, opened) {
+    var frame = document.createElement('iframe');
+    frame.title = '';
+    frame.src = url(item.label, true);
+    frames.push({ frame: frame, item: item, silent: true, opened: opened });
+    attic.appendChild(frame);
+    /* Never leave one running: if nothing comes back, bin it. The download has
+       already happened either way -- losing one attribution beats a leak. */
+    setTimeout(function () {
+      if (frame.parentNode) { forget(frame); frame.remove(); }
+    }, 20000);
+  }
+
+  function showForm(item, note) {
+    closePanel(visible);
+    var frame = document.createElement('iframe');
+    frame.className = 'dl-frame';
+    frame.title = 'Get the ' + item.label;
+    frame.src = url(item.label, false);
+
+    item.panel.innerHTML =
+      '<div class="dl-title">Where should we send the ' + esc(item.label) + '?</div>' +
+      /* One line only. What we record with the lead is set out in the Privacy
+         Policy, which is what it is for; restating it here made a two-field
+         form look heavier than it is. */
+      '<p class="dl-sub">' + (note ? esc(note) + ' ' : '') +
+      'Just your name and email &mdash; it opens straight away. ' +
+      'See our <a href="/privacy">Privacy Policy</a>.</p>';
+    item.panel.appendChild(frame);
+    var cancel = document.createElement('button');
+    cancel.type = 'button';
+    cancel.className = 'dl-cancel';
+    cancel.textContent = 'Cancel';
+    cancel.addEventListener('click', function () { closePanel(item.panel); item.a.focus(); });
+    item.panel.appendChild(cancel);
+
+    frames.push({ frame: frame, item: item, silent: false });
+    item.panel.classList.add('open');
+    visible = item.panel;
   }
 
   document.querySelectorAll('a.js-gated').forEach(function (a) {
     var panel = a.nextElementSibling;
     if (!panel || !panel.classList.contains('dl-panel')) return;
-    var label = a.getAttribute('data-doc') || 'document';
-    var href = a.getAttribute('href');
+    var item = {
+      a: a, panel: panel,
+      label: a.getAttribute('data-doc') || 'document',
+      href: a.getAttribute('href')
+    };
 
     a.addEventListener('click', function (ev) {
-      /* Already given details for this document in this visit? Don't ask twice
-         -- let the link behave like a link. */
+      /* Already fetched this one in this visit -- let the link be a link. */
       if (a.getAttribute('data-captured') === '1') return;
-
       ev.preventDefault();
 
-      if (open === panel) { close(panel); return; }
-      close(open);
+      if (visible === panel) { closePanel(panel); return; }
 
-      var src = FORM +
-        '?key=' + encodeURIComponent(KEY) +
-        '&compact=1&cta=download&consent=1' +
-        '&source=' + encodeURIComponent('Resources — ' + label);
+      if (isKnown()) {
+        /* window.open is legitimate here: we are inside a real click. */
+        var win = null;
+        try { win = window.open(item.href, '_blank'); } catch (e) {}
+        var opened = !!win;
+        record(item, opened);
+        showDone(item, opened);
+        /* Give them a way out if the details on file are not theirs. */
+        var not = document.createElement('button');
+        not.type = 'button';
+        not.className = 'dl-cancel';
+        not.textContent = 'Recorded against a different email? Change it';
+        not.addEventListener('click', function () {
+          forgetKnown();
+          a.removeAttribute('data-captured');
+          showForm(item);
+        });
+        item.panel.appendChild(not);
+        return;
+      }
 
-      panel.innerHTML =
-        '<div class="dl-title">Where should we send the ' + esc(label) + '?</div>' +
-        '<p class="dl-sub">Your name and email, and it opens straight away. We use them to send ' +
-        'you the document and to record which documents you have asked for &mdash; nothing else, ' +
-        'unless you tick the box. See our <a href="/privacy">Privacy Policy</a>.</p>' +
-        '<iframe class="dl-frame" title="Get the ' + esc(label) + '" src="' + esc(src) + '"></iframe>' +
-        '<button type="button" class="dl-cancel">Cancel</button>';
-      panel.classList.add('open');
-      open = panel;
-
-      panel.querySelector('.dl-cancel').addEventListener('click', function () {
-        close(panel);
-        a.focus();
-      });
-      panel.dataset.href = href;
-      panel.dataset.label = label;
+      showForm(item);
     });
   });
 
-  /* Messages from the form. Origin is checked first -- without that, any frame
-     on the page could claim a capture and unlock a document. */
+  /* Messages from the form. Origin is checked first: without it, any frame on
+     the page could claim a capture and unlock a document. e.source then tells
+     us which iframe spoke, so a silent recorder is never confused with a form. */
   window.addEventListener('message', function (e) {
-    if (!/^https:\/\/([a-z0-9-]+\.)?chillipepper\.online$/i.test(e.origin || '')) return;
+    if (!ORIGIN_RE.test(e.origin || '')) return;
     var d = e.data;
-    if (!d || typeof d !== 'object' || !open) return;
+    if (!d || typeof d !== 'object') return;
+
+    var ctx = null;
+    for (var i = 0; i < frames.length; i++) {
+      if (frames[i].frame.contentWindow === e.source) { ctx = frames[i]; break; }
+    }
+    if (!ctx) return;
 
     if (d.type === 'cp-lead-captured') {
-      succeed(open, open.dataset.href, open.dataset.label);
-      open = null;
+      setKnown();
+      if (ctx.silent) { forget(ctx.frame); ctx.frame.remove(); }
+      else showDone(ctx.item, false);
       return;
     }
-    /* Size the frame to its content, so the form is never clipped or padded. */
-    if (d.type === 'cp-form-height') {
+
+    /* We thought we knew them, the form does not. Storage was cleared, or the
+       browser refused it. Ask again rather than lose the attribution. */
+    if (d.type === 'cp-lead-needs-details') {
+      forgetKnown();
+      forget(ctx.frame);
+      ctx.frame.remove();
+      if (ctx.silent) {
+        ctx.item.a.removeAttribute('data-captured');
+        showForm(ctx.item, ctx.opened
+          ? 'Your document is open in another tab.'
+          : 'One more thing before we send it.');
+      }
+      return;
+    }
+
+    if (d.type === 'cp-form-height' && !ctx.silent) {
       var h = parseInt(d.height, 10);
-      var frame = open.querySelector('.dl-frame');
-      if (frame && h > 80 && h < 2000) frame.style.height = (h + 8) + 'px';
+      if (h > 80 && h < 2000) ctx.frame.style.height = (h + 8) + 'px';
     }
   });
 
-  /* Escape closes the open panel, matching the rest of the site's behaviour. */
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && open) {
-      var a = open.previousElementSibling;
-      close(open);
+    if (e.key === 'Escape' && visible) {
+      var a = visible.previousElementSibling;
+      closePanel(visible);
       if (a) a.focus();
     }
   });
+
+  document.body.appendChild(attic);
 })();
 </script>
 <script src="assets/consent.js" defer></script>
