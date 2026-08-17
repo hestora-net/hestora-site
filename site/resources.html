@@ -52,6 +52,23 @@ a{color:var(--blue)}
 .btn{display:inline-block;font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;color:#fff;background:var(--teal);padding:9px 18px;border-radius:8px;text-decoration:none}
 .btn:hover{background:#347a74}
 .note{background:#fff;border:1px solid var(--border);border-left:4px solid var(--amber);border-radius:10px;padding:16px 18px;font-size:14px;color:var(--muted);margin-top:32px}
+
+/* ── Gated download panel ──
+   Each document's button opens one of these in place, holding the compact
+   Chilli Pepper form (name + email). The iframe is only created on click, so
+   no third-party frame or cookie loads for someone just reading the page. */
+.dl-panel{display:none;margin-top:14px;border:1px solid var(--border);border-top:3px solid var(--teal);border-radius:10px;background:#FBFAF7;padding:16px 18px}
+.dl-panel.open{display:block}
+.dl-title{font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;color:var(--grn);margin-bottom:4px}
+.dl-sub{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:14px}
+.dl-frame{width:100%;max-width:460px;border:none;display:block;height:340px;transition:height .2s}
+.dl-cancel{background:none;border:none;padding:0;margin-top:6px;font:inherit;font-size:13px;color:var(--muted);text-decoration:underline;cursor:pointer}
+.dl-done{font-size:14px;line-height:1.6}
+.dl-done strong{color:var(--grn)}
+.dl-open{display:inline-block;margin-top:12px;font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;color:#fff;background:var(--teal);padding:9px 18px;border-radius:8px;text-decoration:none}
+.dl-open:hover{background:#347a74}
+/* Focus visibility: the panel is keyboard-reachable and must show where you are. */
+.dl-panel :focus-visible,.doc .btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 footer{background:var(--grn);color:rgba(255,255,255,.7);font-size:13px;text-align:center;padding:34px 24px}
 footer a{color:#8fd3bf}
 </style>
@@ -75,7 +92,8 @@ footer a{color:#8fd3bf}
     <h2>Hestora White Paper — The Domestic Thermal Energy Store</h2>
     <div class="meta">August 2026 · 9 pages</div>
     <p>The full picture: how the pressurised water store works, the living-lab dataset of 6.4 million smart-meter readings behind its 40&nbsp;kWh sizing, modelled running costs against gas, heat pumps and direct electric, the carbon position, certification status and the route to market.</p>
-    <a class="btn" href="docs/hestora-general-white-paper.pdf">View the white paper</a>
+    <a class="btn js-gated" href="docs/hestora-general-white-paper.pdf" data-doc="White Paper">View the white paper</a>
+    <div class="dl-panel"></div>
   </div>
 </div>
 
@@ -85,7 +103,8 @@ footer a{color:#8fd3bf}
     <h2>Analysis: EPC Ratings and Thermal Storage — from RdSAP 10 to the Home Energy Model</h2>
     <div class="meta">August 2026 · 4 pages</div>
     <p>The engine behind the EPC is changing. Today's RdSAP 10 prices heating on a 2012 fuel-cost table and cannot see smart time-of-use tariffs; the Home Energy Model simulates the home half-hourly and names thermal storage in two of its four new headline metrics. What each engine actually does, with references — and what it means for anyone planning heating decarbonisation to 2030.</p>
-    <a class="btn" href="docs/hestora-analysis-epc-home-energy-model.pdf">View the analysis</a>
+    <a class="btn js-gated" href="docs/hestora-analysis-epc-home-energy-model.pdf" data-doc="EPC / Home Energy Model Analysis">View the analysis</a>
+    <div class="dl-panel"></div>
   </div>
 </div>
 
@@ -95,7 +114,8 @@ footer a{color:#8fd3bf}
     <h2>Briefing for Social Housing Providers</h2>
     <div class="meta">August 2026 · 5 pages</div>
     <p>Written for social landlords: why Hestora fits hard-to-treat stock, tenant fuel-poverty protection, portfolio economics over a 30-year design life, alignment with Warm Homes: Social Housing Fund Wave&nbsp;3 and the Boiler Upgrade Scheme, and how to take part in the pilot.</p>
-    <a class="btn" href="docs/hestora-briefing-social-housing-providers.pdf">View the briefing</a>
+    <a class="btn js-gated" href="docs/hestora-briefing-social-housing-providers.pdf" data-doc="Social Housing Briefing">View the briefing</a>
+    <div class="dl-panel"></div>
   </div>
 </div>
 
@@ -105,7 +125,8 @@ footer a{color:#8fd3bf}
     <h2>Briefing for New Build Developers</h2>
     <div class="meta">August 2026 · 5 pages</div>
     <p>How Hestora helps developers meet the Future Homes Standard: pairing the store with mandated rooftop solar, easing network-connection constraints on larger sites, and a heating system commissioned in around a day by wet-trade skills your supply chain already has.</p>
-    <a class="btn" href="docs/hestora-briefing-new-build-developers.pdf">View the briefing</a>
+    <a class="btn js-gated" href="docs/hestora-briefing-new-build-developers.pdf" data-doc="New Build Developers Briefing">View the briefing</a>
+    <div class="dl-panel"></div>
   </div>
 </div>
 
@@ -115,7 +136,8 @@ footer a{color:#8fd3bf}
     <h2>Briefing for Landlords &amp; Owner-Occupiers</h2>
     <div class="meta">August 2026 · 5 pages</div>
     <p>For private landlords and homeowners: replace the gas boiler without an outdoor unit or new radiators, cut running costs with off-peak charging, and get ahead of the regulations — installed in around a day.</p>
-    <a class="btn" href="docs/hestora-briefing-landlords-owner-occupiers.pdf">View the briefing</a>
+    <a class="btn js-gated" href="docs/hestora-briefing-landlords-owner-occupiers.pdf" data-doc="Landlords &amp; Owner-Occupiers Briefing">View the briefing</a>
+    <div class="dl-panel"></div>
   </div>
 </div>
 
@@ -123,6 +145,128 @@ footer a{color:#8fd3bf}
 </main>
 
 <footer>© 2026 Hestora Limited · Company No. 16856062 · Registered in England &amp; Wales · <a href="privacy.html">Privacy Policy</a> · <a href="cookies.html">Cookie Policy</a></footer>
+<script>
+/* ── Gated document downloads ──────────────────────────────────────────────
+   Clicking a document opens a two-field form (name + email) in place; on a
+   successful capture the document opens and the lead lands in the CRM tagged
+   with which document it was, so "who took what" is answerable.
+
+   Progressive enhancement, deliberately: the buttons are real <a href> links
+   to the PDFs and work with JavaScript off. We intercept the click instead of
+   replacing the link.
+
+   This is a SOFT gate and cannot be anything else on a static site -- the PDFs
+   sit at public URLs, so anyone can copy the link and skip the form. That is
+   the accepted trade: it captures the willing majority without an auth layer,
+   and it never blocks a determined reader. Making it a hard gate would mean
+   serving the files through a function that checks a token.
+
+   The form is the hosted Chilli Pepper one in compact mode, which brings its
+   own bot check and writes straight to the CRM. We create the iframe only on
+   click, so nobody who merely reads this page loads a third-party frame or
+   picks up its cookies. */
+(function () {
+  var FORM = 'https://chillipepper.online/lead-form.html';
+  var KEY = 'fd0ec135-56c9-47c8-9dec-5d2369788988';   /* public lead-capture key, submit-only */
+  var open = null;   /* the panel currently showing, so only one is ever open */
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function close(panel) {
+    if (!panel) return;
+    panel.classList.remove('open');
+    panel.innerHTML = '';           /* drop the iframe so it stops running */
+    if (open === panel) open = null;
+  }
+
+  /* Success: swap the form out for a confirmation plus a real link.
+     We do NOT try to open the PDF from script here -- this runs in a
+     postMessage handler, not a click, so a popup blocker would eat it. The
+     link is a genuine user gesture and always works. */
+  function succeed(panel, href, label) {
+    var a = panel.previousElementSibling;
+    panel.innerHTML =
+      '<p class="dl-done"><strong>Thank you.</strong> Your copy of the ' + esc(label) +
+      ' is ready.</p><a class="dl-open" href="' + esc(href) + '" target="_blank" rel="noopener">Open the document</a>';
+    var link = panel.querySelector('.dl-open');
+    if (link) link.focus();
+    if (a) a.setAttribute('data-captured', '1');
+  }
+
+  document.querySelectorAll('a.js-gated').forEach(function (a) {
+    var panel = a.nextElementSibling;
+    if (!panel || !panel.classList.contains('dl-panel')) return;
+    var label = a.getAttribute('data-doc') || 'document';
+    var href = a.getAttribute('href');
+
+    a.addEventListener('click', function (ev) {
+      /* Already given details for this document in this visit? Don't ask twice
+         -- let the link behave like a link. */
+      if (a.getAttribute('data-captured') === '1') return;
+
+      ev.preventDefault();
+
+      if (open === panel) { close(panel); return; }
+      close(open);
+
+      var src = FORM +
+        '?key=' + encodeURIComponent(KEY) +
+        '&compact=1&cta=download&consent=1' +
+        '&source=' + encodeURIComponent('Resources — ' + label);
+
+      panel.innerHTML =
+        '<div class="dl-title">Where should we send the ' + esc(label) + '?</div>' +
+        '<p class="dl-sub">Your name and email, and it opens straight away. We use them to send ' +
+        'you the document and to record which documents you have asked for &mdash; nothing else, ' +
+        'unless you tick the box. See our <a href="/privacy">Privacy Policy</a>.</p>' +
+        '<iframe class="dl-frame" title="Get the ' + esc(label) + '" src="' + esc(src) + '"></iframe>' +
+        '<button type="button" class="dl-cancel">Cancel</button>';
+      panel.classList.add('open');
+      open = panel;
+
+      panel.querySelector('.dl-cancel').addEventListener('click', function () {
+        close(panel);
+        a.focus();
+      });
+      panel.dataset.href = href;
+      panel.dataset.label = label;
+    });
+  });
+
+  /* Messages from the form. Origin is checked first -- without that, any frame
+     on the page could claim a capture and unlock a document. */
+  window.addEventListener('message', function (e) {
+    if (!/^https:\/\/([a-z0-9-]+\.)?chillipepper\.online$/i.test(e.origin || '')) return;
+    var d = e.data;
+    if (!d || typeof d !== 'object' || !open) return;
+
+    if (d.type === 'cp-lead-captured') {
+      succeed(open, open.dataset.href, open.dataset.label);
+      open = null;
+      return;
+    }
+    /* Size the frame to its content, so the form is never clipped or padded. */
+    if (d.type === 'cp-form-height') {
+      var h = parseInt(d.height, 10);
+      var frame = open.querySelector('.dl-frame');
+      if (frame && h > 80 && h < 2000) frame.style.height = (h + 8) + 'px';
+    }
+  });
+
+  /* Escape closes the open panel, matching the rest of the site's behaviour. */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && open) {
+      var a = open.previousElementSibling;
+      close(open);
+      if (a) a.focus();
+    }
+  });
+})();
+</script>
 <script src="assets/consent.js" defer></script>
 <!-- Cloudflare Web Analytics. Same site + token as before the Netlify move: until 2026-08 the
      Cloudflare proxy injected this automatically; Netlify does not, so it is committed here.

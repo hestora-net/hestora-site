@@ -1095,8 +1095,13 @@ html{scroll-padding-top:68px}
       </div>
       <div class="form-card" id="form-card">
         <!-- SMART CRM lead form -->
-        <!-- height 1250px fits the form incl. expanded manual-address block and the Cloudflare check -->
-        <iframe id="lead-iframe" src="https://chillipepper.online/lead-form.html?key=fd0ec135-56c9-47c8-9dec-5d2369788988" style="width:100%;max-width:560px;height:900px;border:none;display:block;margin:0 auto" title="Register your interest — contact form" loading="lazy"></iframe>
+        <!-- The height below is only a starting value. The form now reports its own height
+             (cp-form-height, handled by the listener at the foot of this page), so the iframe
+             resizes to fit once it loads. Before that it never did, which is why this used to
+             carry a note saying 1250px was needed while being set to 900 -- too short clipped
+             the expanded manual-address block and the Cloudflare check. 1250 is the safe
+             pre-resize value: too tall merely leaves a gap for a moment, too short clips. -->
+        <iframe id="lead-iframe" src="https://chillipepper.online/lead-form.html?key=fd0ec135-56c9-47c8-9dec-5d2369788988" style="width:100%;max-width:560px;height:1250px;border:none;display:block;margin:0 auto" title="Register your interest — contact form" loading="lazy"></iframe>
         <p class="form-note">We'll only use your details to keep you updated about Hestora. No spam, no sharing with third parties. Unsubscribe at any time.</p>
       </div>
     </div>
