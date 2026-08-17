@@ -1,0 +1,42 @@
+# Netlify configuration for www.hestora.net
+#
+# The site is plain HTML with no build step, so there is no `command` here -- Netlify
+# just publishes the `site/` directory as-is. Everything the browser fetches lives
+# under site/; anything at the repo root (this file, the README) is never served.
+
+[build]
+  publish = "site"
+
+# Apex -> www is handled by setting www.hestora.net as the PRIMARY domain in
+# Netlify's Domain management, not by a redirect rule here.
+#
+# Extensionless URLs (/privacy, /cookies, /resources) are Netlify's default
+# behaviour for .html files, which is what sitemap.xml already advertises.
+# Verify on the deploy preview before the DNS cutover.
+
+[[headers]]
+  # Images and the explainer video are NOT fingerprinted -- vessel-1.jpg keeps its
+  # name if the underlying image is swapped. So a week, not a year: fast on repeat
+  # visits, but replacing an image still reaches people within days.
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  # The published PDFs (white paper, sector briefings). Same reasoning as assets --
+  # the filenames are stable, so cache for a week, not forever.
+  for = "/docs/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    # No Content-Security-Policy yet. The page pulls Google Fonts, embeds
+    # youtube-nocookie, loads Microsoft Clarity via assets/consent.js, and hosts a
+    # chillipepper.online lead form -- a CSP written blind would break at least one
+    # of those. Worth adding deliberately, with each source enumerated and tested on
+    # a deploy preview.

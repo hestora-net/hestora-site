@@ -1,0 +1,30 @@
+# Analytics credentials. `.analytics-config.json` holds a live Cloudflare API token
+# and a Microsoft Clarity export token. It belongs in a password manager, never in
+# this repo. Listed here so an accidental `git add .` cannot commit it.
+.analytics-config.json
+*.analytics-config.json
+
+# Any other secret-bearing file.
+.env
+.env.*
+!.env.example
+
+# macOS / Dropbox noise.
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+
+# Editor backups.
+*~
+*.swp
+*.swo
+
+# Distribution archives -- the repo IS the distribution now.
+*.zip
+
+# Node, if a build step is ever added.
+node_modules/
+*.log
