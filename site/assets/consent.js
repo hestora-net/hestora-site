@@ -15,6 +15,11 @@
  *
  * Flip to false for the strictest reading of PECR. See cookies.html,
  * which must stay consistent with whichever setting is live.
+ *
+ * Note: the banner link below is written as "/cookies", not "cookies.html".
+ * Netlify rewrites .html links to extensionless form at deploy time, but it only
+ * post-processes HTML -- never JavaScript -- so a link built in here has to be
+ * canonical already.
  * ------------------------------------------------------------------ */
 (function () {
   var KEY = 'hestora-consent';
@@ -74,7 +79,7 @@
       '#hestora-consent-banner .hcb-decline:hover{border-color:#fff}' +
       '</style>' +
       '<div class="hcb-in">' +
-      '<p><strong>Cookies at Hestora.</strong> We’d like to use Microsoft Clarity analytics to understand how visitors use our site and improve it. No advertising, no cross-site tracking. See our <a href="cookies.html">Cookie Policy</a>.</p>' +
+      '<p><strong>Cookies at Hestora.</strong> We’d like to use Microsoft Clarity analytics to understand how visitors use our site and improve it. No advertising, no cross-site tracking. See our <a href="/cookies">Cookie Policy</a>.</p>' +
       '<div class="hcb-btns">' +
       '<button type="button" class="hcb-decline">Essential only</button>' +
       '<button type="button" class="hcb-accept">Accept analytics</button>' +

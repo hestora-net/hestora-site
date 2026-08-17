@@ -4,7 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cookie Policy | Hestora</title>
+<meta name="description" content="The cookies and similar technologies used on hestora.net, what each one does, and how to change your analytics choice at any time.">
 <meta name="robots" content="index, follow">
+<!-- Netlify serves this page at both /cookies and /cookies.html. The canonical points at
+     the extensionless form, which is what sitemap.xml advertises and what Netlify rewrites
+     our own internal links to, so search engines consolidate on one URL. -->
+<link rel="canonical" href="https://www.hestora.net/cookies">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231B3A2F'/%3E%3Crect x='8' y='7' width='16' height='3.4' rx='1.7' fill='%23D74732'/%3E%3Crect x='8' y='12.5' width='16' height='3.4' rx='1.7' fill='%23F59435'/%3E%3Crect x='8' y='18' width='16' height='3.4' rx='1.7' fill='%233F8D86'/%3E%3Crect x='8' y='23.5' width='16' height='3.4' rx='1.7' fill='%231491A6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,6 +34,7 @@ p{margin-bottom:14px}
 ul{margin:0 0 14px 22px}li{margin-bottom:7px}
 a{color:var(--blue)}
 strong{font-weight:600}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92em;background:#EFEDE6;border:1px solid var(--border);border-radius:4px;padding:1px 5px}
 table{width:100%;border-collapse:collapse;margin:8px 0 20px;font-size:14px;background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
 th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top}
 th{background:var(--grn);color:#fff;font-family:'Manrope',sans-serif;font-weight:700;font-size:13px}
@@ -46,9 +52,7 @@ footer a{color:#8fd3bf}
 
 <main>
 <h1>Cookie Policy</h1>
-<p class="updated">Last updated: July 2026</p>
-
-<div class="note"><strong>Please note:</strong> this is a starting template for Hestora Limited. Have it reviewed before launch, and update it if you add analytics or marketing tools (e.g. Google Analytics, Meta Pixel), which would introduce additional cookies.</div>
+<p class="updated">Last updated: August 2026</p>
 
 <p>This Cookie Policy explains how <strong>Hestora Limited</strong> uses cookies and similar technologies on hestora.net. For how we handle personal data more generally, see our <a href="privacy.html">Privacy Policy</a>.</p>
 
@@ -59,9 +63,10 @@ footer a{color:#8fd3bf}
 <p>We keep cookies to a minimum. We currently use:</p>
 <table>
   <tr><th>Name / type</th><th>Purpose</th><th>Category</th></tr>
-  <tr><td>Cookie-notice preference<br>(browser local storage)</td><td>Remembers that you've dismissed the cookie banner so it doesn't reappear.</td><td>Essential</td></tr>
+  <tr><td>Consent preference<br>(browser local storage, <code>hestora-consent</code>)</td><td>Remembers the analytics choice you made on our cookie banner, so we don't ask again on every page. This is stored on your device only and is never sent to us.</td><td>Essential</td></tr>
   <tr><td>Contact-form cookies<br>(set by chillipepper.online)</td><td>Our embedded "Register your interest" form is provided by Chilli Pepper and may set cookies needed for the form to work and to guard against spam/bots.</td><td>Essential / functional</td></tr>
   <tr><td>Video</td><td>Our explainer video is served from our own site and does not set advertising cookies. If you click through to watch it on YouTube, YouTube's own cookies apply on their platform.</td><td>Functional</td></tr>
+  <tr><td>Cloudflare Web Analytics<br>(no cookies, no local storage)</td><td>We count page views and measure how quickly pages load, using Cloudflare Web Analytics. It sets <strong>no cookies</strong>, stores nothing on your device and does not fingerprint your browser or track you between sites, so it runs for all visitors and does not require consent. It reports only aggregate figures &mdash; page URL, referrer, country, browser and timing &mdash; and cannot identify you. See <a href="https://blog.cloudflare.com/privacy-first-web-analytics/" rel="noopener">Cloudflare's statement on how Web Analytics handles data</a>.</td><td>Analytics (no consent required)</td></tr>
   <tr><td>Microsoft Clarity<br>(_clck, _clsk, MUID and similar)</td><td>We use Microsoft Clarity to understand how visitors use our site &mdash; for example which sections are read and where visitors stop scrolling &mdash; so we can improve it. Clarity cookies are <strong>only set if you choose "Accept analytics"</strong> on our cookie banner. Before you make a choice, Clarity runs in a <strong>cookieless mode</strong>: it records anonymous page-level interaction (such as scroll depth) using a throwaway identifier, stores nothing on your device, and cannot recognise you across pages or visits. If you choose "Essential only", Clarity does not run at all. Data is processed by Microsoft; see <a href="https://privacy.microsoft.com/en-gb/privacystatement" rel="noopener">Microsoft's privacy statement</a>.</td><td>Analytics (cookies require consent)</td></tr>
 </table>
 <p>We do <strong>not</strong> use advertising or cross-site tracking cookies. Analytics cookies are only used if you consent via the cookie banner.</p>
