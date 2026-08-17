@@ -82,6 +82,12 @@
 :root{
   --red:#D74732;
   --amber:#F59435;
+  /* Text colour for anything sitting ON --amber. White on #F59435 is only 2.29:1,
+     which fails WCAG AA for both normal and large text; this warm near-black is
+     6.40:1. Amber itself is unchanged, so the four-colour bars are unaffected.
+     Same treatment the newsletter CTA already used. Do not set amber buttons to
+     white text -- it looks fine on a good monitor and is unreadable in sunlight. */
+  --on-amber:#3A2402;
   --teal:#3F8D86;
   --teal-dark:#3F8D86;
   --blue:#1491A6;
@@ -112,7 +118,7 @@ nav.scrolled .nav-logo{height:38px}
 .nav-links{display:flex;gap:4px;background:var(--offwhite);border-radius:40px;padding:5px}
 .nav-links a{text-decoration:none;font-size:13px;font-weight:600;color:var(--muted);padding:7px 16px;border-radius:30px;transition:all .2s;text-align:center;white-space:nowrap}
 .nav-links a:hover,.nav-links a.active{background:white;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
-.nav-cta{background:var(--amber);color:white;padding:10px 24px;border-radius:30px;font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;text-decoration:none;transition:opacity .2s,transform .1s}
+.nav-cta{background:var(--amber);color:var(--on-amber);padding:10px 24px;border-radius:30px;font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;text-decoration:none;transition:opacity .2s,transform .1s}
 .nav-cta:hover{opacity:.88;transform:translateY(-1px)}
 
 /* ── HERO ── */
@@ -131,7 +137,7 @@ nav.scrolled .nav-logo{height:38px}
 .hero .btn-ghost:hover{background:rgba(255,255,255,0.12)}
 .hero .btn-secondary{background:#3F8D86;color:#fff;border-radius:40px;padding:15px 32px;font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;text-decoration:none;transition:all .2s;border:none}
 .hero .btn-secondary:hover{background:#4CA69D;transform:translateY(-1px)}
-.hero .btn-amber{background:#F59435;color:#fff;border-radius:40px;padding:15px 32px;font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;text-decoration:none;transition:all .2s;border:none}
+.hero .btn-amber{background:#F59435;color:var(--on-amber);border-radius:40px;padding:15px 32px;font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;text-decoration:none;transition:all .2s;border:none}
 .hero .btn-amber:hover{background:#F9A551;transform:translateY(-1px)}
 .hero-trust{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .hero .trust-tag{font-size:13px;color:rgba(255,255,255,0.82);display:flex;align-items:center;gap:8px;padding:10px 18px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:30px}
@@ -785,8 +791,14 @@ html{scroll-padding-top:68px}
     <span class="eyebrow" style="color:var(--d-tealb)">See it in action</span>
     <h2>A boiler replacement for a world without gas</h2>
     <p class="dk-sub" style="color:var(--d-dgrey)">See how Hestora charges overnight and delivers a full day of heating and hot water for the home you already have.</p>
+    <!-- No <track> element here, deliberately. The explainer's captions are burned into
+         the picture (the MP4 has only vide + soun tracks, no subtitle track), so they are
+         always visible and need no caption file. There WAS a track pointing at
+         assets/hestora-explainer.vtt, which never existed: it 404'd on every page load and
+         made the player offer an "English" subtitles option that displayed nothing.
+         If open captions are ever replaced with a real WebVTT file, add the track back. -->
     <div style="max-width:760px;margin:30px auto 0">
-      <div style="position:relative;border-radius:16px;overflow:hidden;box-shadow:0 8px 48px rgba(0,0,0,0.35);border:1px solid #2E5040;background:linear-gradient(160deg,#1B3A2F,#0d0d0d)"><video id="explainer" controls preload="metadata" playsinline poster="assets/hestora-poster.jpg" onended="this.load()" title="Hestora explainer — how the thermal energy store works" style="display:block;width:100%;aspect-ratio:16/9;background:#000;object-fit:cover"><source src="assets/hestora-explainer.mp4" type="video/mp4"><track kind="captions" src="assets/hestora-explainer.vtt" srclang="en" label="English">Your browser can't play embedded video. <a href="https://www.youtube.com/watch?v=Gz1KdfADeew" style="color:#8fd3bf">Watch on YouTube</a>.</video></div>
+      <div style="position:relative;border-radius:16px;overflow:hidden;box-shadow:0 8px 48px rgba(0,0,0,0.35);border:1px solid #2E5040;background:linear-gradient(160deg,#1B3A2F,#0d0d0d)"><video id="explainer" controls preload="metadata" playsinline poster="assets/hestora-poster.jpg" onended="this.load()" title="Hestora explainer — how the thermal energy store works" style="display:block;width:100%;aspect-ratio:16/9;background:#000;object-fit:cover"><source src="assets/hestora-explainer.mp4" type="video/mp4">Your browser can't play embedded video. <a href="https://www.youtube.com/watch?v=Gz1KdfADeew" style="color:#8fd3bf">Watch on YouTube</a>.</video></div>
     </div>
     <div class="dk-stats">
       <div class="dk-stat"><div class="dk-ring" style="--ring:#D74732"><b>40</b><span>kWh</span></div><p>40 kWh covers the daily heat demand of roughly half of UK homes in a single overnight charge</p></div>
@@ -1369,11 +1381,11 @@ function loadYT(el){var id=el.getAttribute("data-id");el.innerHTML='<iframe src=
 <script>
 (function(){var t;document.addEventListener("focusin",function(e){var el=e.target.closest&&e.target.closest(".partner-tile");if(el){clearTimeout(t);t=setTimeout(function(){if(el.blur)el.blur();},10000);}});document.addEventListener("focusout",function(e){if(e.target.closest&&e.target.closest(".partner-tile"))clearTimeout(t);});})();
 </script>
-<div id="cookie-notice" role="dialog" aria-label="Cookie notice" style="position:fixed;bottom:0;left:0;right:0;z-index:300;background:#1B3A2F;color:#fff;padding:14px 20px;display:none;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font-size:13px;line-height:1.5;box-shadow:0 -4px 20px rgba(0,0,0,0.25)"><span>We use essential cookies, plus an embedded form and video to make this site work. See our <a href="cookies.html" style="color:#6FB8B0">Cookie Policy</a>.</span><button onclick="acceptCookies()" style="background:#D74732;color:#fff;border:none;border-radius:20px;padding:8px 22px;font-family:'Manrope',sans-serif;font-weight:700;cursor:pointer">Got it</button></div>
-<script>
-(function(){try{if(!localStorage.getItem("hestora-cookie-ok")){var n=document.getElementById("cookie-notice");if(n)n.style.display="flex";}}catch(e){}})();
-function acceptCookies(){try{localStorage.setItem("hestora-cookie-ok","1")}catch(e){}var n=document.getElementById("cookie-notice");if(n)n.style.display="none";}
-</script>
+<!-- The old inline "Got it" cookie notice lived here. Removed 17 Aug 2026: it was a
+     second banner on top of the real one in assets/consent.js, so a first-time visitor
+     had to dismiss a cookie banner twice. The two used different localStorage keys
+     (hestora-cookie-ok vs hestora-consent), so accepting one never cleared the other.
+     assets/consent.js is now the only consent UI on the site. -->
 <script>
 (function(){var v=document.getElementById("explainer");if(v&&"IntersectionObserver" in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting&&!v.paused){v.pause();}});},{threshold:0.25});io.observe(v);}})();
 </script>
