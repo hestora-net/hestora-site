@@ -1,6 +1,5 @@
-# Analytics credentials. `.analytics-config.json` holds a live Cloudflare API token
-# and a Microsoft Clarity export token. It belongs in a password manager, never in
-# this repo. Listed here so an accidental `git add .` cannot commit it.
+# Analytics/credential config files. Never in this repo -- listed here so an
+# accidental `git add .` cannot commit one.
 .analytics-config.json
 *.analytics-config.json
 

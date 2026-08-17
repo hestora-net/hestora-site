@@ -32,15 +32,9 @@ those from the `.html` files by default — no redirect rules needed.
 
 ## Where the source material lives
 
-Not in this repo, deliberately. The masters stay in Dropbox under
-`05 Sales & Marketing / 01 Website`:
-
-- `assets/` — the 66 MB of full-resolution images and the original explainer video
-- `Website Thoughts.pptx`, `Website thoughts 250326.pptx` — design thinking
-- `Website text v2/v3.docx` — the copy decks
-
-Only the web-sized derivatives are committed here (~13 MB total). Same split as
-`Skippers-Retreat`: masters in cloud storage, derivatives in git.
+Not in this repo, deliberately. The full-resolution image masters, the original
+explainer video, and the design/copy working documents live in company cloud
+storage. Only the web-sized derivatives are committed here (~13 MB total).
 
 ## Things to know before editing
 
@@ -50,8 +44,8 @@ the diffs are effectively unreadable. It works, but it means you lose most of th
 it into partials or move to a static site generator — `Skippers-Retreat` uses Astro and
 is a reasonable model.
 
-**Never commit `.analytics-config.json`.** It carries a live Cloudflare API token and a
-Clarity export token. It is in `.gitignore`, and it should live in a password manager.
+**Never commit credential files.** `.gitignore` blocks `.env` files and analytics
+config files. Anything secret belongs in a password manager, never in this repo.
 
 **`assets/consent.js` and `cookies.html` must stay consistent.** The consent script has a
 `COOKIELESS_BEFORE_CONSENT` flag governing how Microsoft Clarity loads; the cookie policy
@@ -61,13 +55,11 @@ describes whichever setting is live. Change one, change the other.
 
 - **Microsoft Clarity** — loaded through `assets/consent.js`, gated on consent. Unaffected
   by hosting.
-- **Cloudflare Web Analytics** — was injected automatically by Cloudflare and stops working
-  once the site is on Netlify. Needs replacing (Plausible is cookieless and needs no consent
-  banner; GA4 is free but does need consent).
+- **Cloudflare Web Analytics** — a cookieless beacon committed at the bottom of every page
+  (added Aug 2026; previously Cloudflare's proxy injected it automatically). Same site and
+  token throughout, so the dashboard history is continuous across the move to Netlify.
 
 ## History
 
-Commit #1 is the site exactly as it was deployed by hand on 13 August 2026. Everything
-before that point exists only as the dated folders in Dropbox
-(`Website 270726`, `Website 290726`, `Archive`) — kept for reference, superseded by this
-repo's history.
+Commit #1 is the site exactly as it was deployed by hand on 13 August 2026. Earlier
+iterations predate version control and exist only as archived folders offline.
