@@ -44,31 +44,42 @@ h1{font-family:'Manrope',sans-serif;font-weight:800;font-size:clamp(30px,5vw,44p
 .updated{color:var(--muted);font-size:14px;margin-bottom:28px}
 p{margin-bottom:14px}
 a{color:var(--blue)}
-.doc{background:#fff;border:1px solid var(--border);border-radius:12px;padding:24px 26px;margin-bottom:20px;display:flex;gap:20px;align-items:flex-start}
-.doc .icon{flex:0 0 44px;height:54px;border-radius:6px;background:var(--grn);display:flex;align-items:center;justify-content:center;font-family:'Manrope',sans-serif;font-weight:800;font-size:12px;color:#fff;letter-spacing:.04em}
-.doc h2{font-family:'Manrope',sans-serif;font-weight:800;font-size:19px;color:var(--grn);margin:0 0 6px}
-.doc .meta{color:var(--muted);font-size:13px;margin-bottom:8px}
-.doc p{font-size:15px;margin-bottom:12px}
-.btn{display:inline-block;font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;color:#fff;background:var(--teal);padding:9px 18px;border-radius:8px;text-decoration:none}
-.btn:hover{background:#347a74}
-.note{background:#fff;border:1px solid var(--border);border-left:4px solid var(--amber);border-radius:10px;padding:16px 18px;font-size:14px;color:var(--muted);margin-top:32px}
+/* ── Document library ──
+   A compact row per document, grouped by audience, so the whole library fits
+   one screen. Deliberately restrained: this is a reference shelf, not a set of
+   promo cards, and it sits next to briefings that go to housing associations
+   and developers. */
+.access{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:26px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.access-msg{font-size:14px;line-height:1.5;margin:0}
+.access-msg strong{color:var(--grn)}
+.access-who{font-size:14px;margin:0;color:var(--muted)}
+.access-who b{color:var(--ink);font-weight:600}
+.access-act{background:var(--teal);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap}
+.access-act:hover{background:#347a74}
+.access-link{background:none;border:none;padding:0;font:inherit;font-size:13px;color:var(--muted);text-decoration:underline;cursor:pointer}
+.access-form{width:100%;margin-top:4px}
+.access-frame{width:100%;max-width:460px;border:none;display:block;height:340px;transition:height .2s}
 
-/* ── Gated download panel ──
-   Each document's button opens one of these in place, holding the compact
-   Chilli Pepper form (name + email). The iframe is only created on click, so
-   no third-party frame or cookie loads for someone just reading the page. */
-.dl-panel{display:none;margin-top:14px;border:1px solid var(--border);border-top:3px solid var(--teal);border-radius:10px;background:#FBFAF7;padding:16px 18px}
-.dl-panel.open{display:block}
-.dl-title{font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;color:var(--grn);margin-bottom:4px}
-.dl-sub{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:14px}
-.dl-frame{width:100%;max-width:460px;border:none;display:block;height:340px;transition:height .2s}
-.dl-cancel{background:none;border:none;padding:0;margin-top:6px;font:inherit;font-size:13px;color:var(--muted);text-decoration:underline;cursor:pointer}
-.dl-done{font-size:14px;line-height:1.6}
-.dl-done strong{color:var(--grn)}
-.dl-open{display:inline-block;margin-top:12px;font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;color:#fff;background:var(--teal);padding:9px 18px;border-radius:8px;text-decoration:none}
-.dl-open:hover{background:#347a74}
-/* Focus visibility: the panel is keyboard-reachable and must show where you are. */
-.dl-panel :focus-visible,.doc .btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.group{margin:0 0 30px}
+.group-title{font-family:'Manrope',sans-serif;font-weight:700;font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.doclist{list-style:none;margin:0;padding:0}
+.docrow{display:flex;align-items:center;gap:16px;padding:14px 2px;border-bottom:1px solid var(--border)}
+.docrow:last-child{border-bottom:none}
+.doctag{flex:0 0 38px;height:46px;border-radius:5px;background:var(--grn);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Manrope',sans-serif;font-weight:800;font-size:10px;letter-spacing:.04em}
+.docmain{flex:1 1 auto;min-width:0}
+.docrow h3{font-family:'Manrope',sans-serif;font-weight:700;font-size:16px;color:var(--grn);margin:0 0 2px;line-height:1.35}
+.docsum{font-size:13.5px;color:var(--muted);line-height:1.5;margin:0}
+.docmeta{font-size:12px;color:var(--muted);margin:0 0 3px;letter-spacing:.01em}
+.docopen{flex:0 0 auto;font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;text-decoration:none;padding:8px 15px;border-radius:7px;white-space:nowrap;border:1.5px solid var(--teal);color:var(--teal);background:#fff}
+.docopen:hover{background:var(--teal);color:#fff}
+.docopen[data-locked="1"]{border-color:var(--border);color:var(--muted)}
+.docopen[data-locked="1"]:hover{background:var(--bg);color:var(--ink)}
+@media(max-width:600px){
+  .docrow{align-items:flex-start;flex-wrap:wrap}
+  .doctag{display:none}
+  .docopen{margin-top:4px}
+}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 footer{background:var(--grn);color:rgba(255,255,255,.7);font-size:13px;text-align:center;padding:34px 24px}
 footer a{color:#8fd3bf}
 </style>
@@ -86,115 +97,134 @@ footer a{color:#8fd3bf}
 
 <p>The documents below set out what Hestora is, the real-home data behind its sizing, our running-cost and carbon modelling, and the route to market — including the monitored pilot beginning in November 2026.</p>
 
-<div class="doc">
-  <div class="icon">PDF</div>
-  <div>
-    <h2>Hestora White Paper — The Domestic Thermal Energy Store</h2>
-    <div class="meta">August 2026 · 9 pages</div>
-    <p>The full picture: how the pressurised water store works, the living-lab dataset of 6.4 million smart-meter readings behind its 40&nbsp;kWh sizing, modelled running costs against gas, heat pumps and direct electric, the carbon position, certification status and the route to market.</p>
-    <a class="btn js-gated" href="docs/hestora-general-white-paper.pdf" data-doc="White Paper">View the white paper</a>
-    <div class="dl-panel"></div>
-  </div>
-</div>
+<!-- Access bar. One gate for the whole library rather than a form per
+     document: the old per-document panels stacked up, pushed the list off
+     screen, and made the visitor answer the same question five times. -->
+<div class="access" id="access"></div>
 
-<div class="doc">
-  <div class="icon">PDF</div>
-  <div>
-    <h2>Analysis: EPC Ratings and Thermal Storage — from RdSAP 10 to the Home Energy Model</h2>
-    <div class="meta">August 2026 · 4 pages</div>
-    <p>The engine behind the EPC is changing. Today's RdSAP 10 prices heating on a 2012 fuel-cost table and cannot see smart time-of-use tariffs; the Home Energy Model simulates the home half-hourly and names thermal storage in two of its four new headline metrics. What each engine actually does, with references — and what it means for anyone planning heating decarbonisation to 2030.</p>
-    <a class="btn js-gated" href="docs/hestora-analysis-epc-home-energy-model.pdf" data-doc="EPC / Home Energy Model Analysis">View the analysis</a>
-    <div class="dl-panel"></div>
-  </div>
-</div>
+<section class="group">
+  <h2 class="group-title">General</h2>
+  <ul class="doclist">
+    <li class="docrow">
+      <span class="doctag" aria-hidden="true">PDF</span>
+      <div class="docmain">
+        <h3>Hestora White Paper &mdash; The Domestic Thermal Energy Store</h3>
+        <p class="docmeta">August 2026 &middot; 9 pages</p>
+        <p class="docsum">How the pressurised water store works, the 6.4 million smart-meter readings behind its 40&nbsp;kWh sizing, running costs against gas and heat pumps, and the route to market.</p>
+      </div>
+      <a class="docopen js-doc" href="docs/hestora-general-white-paper.pdf" data-doc="White Paper">Open</a>
+    </li>
+    <li class="docrow">
+      <span class="doctag" aria-hidden="true">PDF</span>
+      <div class="docmain">
+        <h3>Analysis &mdash; EPC Ratings and Thermal Storage</h3>
+        <p class="docmeta">August 2026 &middot; 4 pages</p>
+        <p class="docsum">What RdSAP&nbsp;10 and the incoming Home Energy Model each actually do, with references, and what it means for anyone planning heating decarbonisation to 2030.</p>
+      </div>
+      <a class="docopen js-doc" href="docs/hestora-analysis-epc-home-energy-model.pdf" data-doc="EPC / Home Energy Model Analysis">Open</a>
+    </li>
+  </ul>
+</section>
 
-<div class="doc">
-  <div class="icon">PDF</div>
-  <div>
-    <h2>Briefing for Social Housing Providers</h2>
-    <div class="meta">August 2026 · 5 pages</div>
-    <p>Written for social landlords: why Hestora fits hard-to-treat stock, tenant fuel-poverty protection, portfolio economics over a 30-year design life, alignment with Warm Homes: Social Housing Fund Wave&nbsp;3 and the Boiler Upgrade Scheme, and how to take part in the pilot.</p>
-    <a class="btn js-gated" href="docs/hestora-briefing-social-housing-providers.pdf" data-doc="Social Housing Briefing">View the briefing</a>
-    <div class="dl-panel"></div>
-  </div>
-</div>
-
-<div class="doc">
-  <div class="icon">PDF</div>
-  <div>
-    <h2>Briefing for New Build Developers</h2>
-    <div class="meta">August 2026 · 5 pages</div>
-    <p>How Hestora helps developers meet the Future Homes Standard: pairing the store with mandated rooftop solar, easing network-connection constraints on larger sites, and a heating system commissioned in around a day by wet-trade skills your supply chain already has.</p>
-    <a class="btn js-gated" href="docs/hestora-briefing-new-build-developers.pdf" data-doc="New Build Developers Briefing">View the briefing</a>
-    <div class="dl-panel"></div>
-  </div>
-</div>
-
-<div class="doc">
-  <div class="icon">PDF</div>
-  <div>
-    <h2>Briefing for Landlords &amp; Owner-Occupiers</h2>
-    <div class="meta">August 2026 · 5 pages</div>
-    <p>For private landlords and homeowners: replace the gas boiler without an outdoor unit or new radiators, cut running costs with off-peak charging, and get ahead of the regulations — installed in around a day.</p>
-    <a class="btn js-gated" href="docs/hestora-briefing-landlords-owner-occupiers.pdf" data-doc="Landlords &amp; Owner-Occupiers Briefing">View the briefing</a>
-    <div class="dl-panel"></div>
-  </div>
-</div>
+<section class="group">
+  <h2 class="group-title">Sector briefings</h2>
+  <ul class="doclist">
+    <li class="docrow">
+      <span class="doctag" aria-hidden="true">PDF</span>
+      <div class="docmain">
+        <h3>Briefing for Social Housing Providers</h3>
+        <p class="docmeta">August 2026 &middot; 5 pages</p>
+        <p class="docsum">Hard-to-treat stock, tenant fuel-poverty protection, portfolio economics over a 30-year design life, and alignment with Warm Homes and the Boiler Upgrade Scheme.</p>
+      </div>
+      <a class="docopen js-doc" href="docs/hestora-briefing-social-housing-providers.pdf" data-doc="Social Housing Briefing">Open</a>
+    </li>
+    <li class="docrow">
+      <span class="doctag" aria-hidden="true">PDF</span>
+      <div class="docmain">
+        <h3>Briefing for New Build Developers</h3>
+        <p class="docmeta">August 2026 &middot; 5 pages</p>
+        <p class="docsum">Meeting the Future Homes Standard: pairing the store with mandated rooftop solar, easing network-connection constraints, and commissioning in about a day.</p>
+      </div>
+      <a class="docopen js-doc" href="docs/hestora-briefing-new-build-developers.pdf" data-doc="New Build Developers Briefing">Open</a>
+    </li>
+    <li class="docrow">
+      <span class="doctag" aria-hidden="true">PDF</span>
+      <div class="docmain">
+        <h3>Briefing for Landlords &amp; Owner-Occupiers</h3>
+        <p class="docmeta">August 2026 &middot; 5 pages</p>
+        <p class="docsum">Replace the gas boiler with no outdoor unit and no new radiators, cut running costs with off-peak charging, and get ahead of the regulations.</p>
+      </div>
+      <a class="docopen js-doc" href="docs/hestora-briefing-landlords-owner-occupiers.pdf" data-doc="Landlords &amp; Owner-Occupiers Briefing">Open</a>
+    </li>
+  </ul>
+</section>
 
 <p style="margin-top:32px">Questions, or interested in the pilot programme? Email <a href="mailto:jim@hestora.net">jim@hestora.net</a> or see the product in action at <a href="index.html">hestora.net</a>.</p>
 </main>
 
 <footer>© 2026 Hestora Limited · Company No. 16856062 · Registered in England &amp; Wales · <a href="privacy.html">Privacy Policy</a> · <a href="cookies.html">Cookie Policy</a></footer>
 <script>
-/* ── Gated document downloads ──────────────────────────────────────────────
-   First document: a two-field form (name + email) opens in place. After that
-   we know the visitor, so every later document opens immediately and is
-   recorded against them in the background -- asked once, still attributed.
+/* ── Access to the documents ───────────────────────────────────────────────
+   The library is public; the files are not. One sign-in unlocks all five, and
+   each document opened is recorded against the person in the CRM.
 
-   Who remembers what, and why it is split:
-     - Chilli Pepper's form remembers the name and email, in its own storage on
-       its own origin. It has to be that way round: this page cannot read or
-       pre-fill a cross-origin iframe, and putting a name and email in the
-       iframe URL instead would leak personal data into browser history and
-       server logs.
-     - This page remembers only a yes/no "we have their details" flag, which is
-       all it needs to decide between the two routes.
-   The two can fall out of step (Safari may drop third-party storage while our
-   own flag survives). The form says so with cp-lead-needs-details, and we show
-   the form again rather than silently failing to record.
+   EVERYTHING mechanism-specific lives in the Access object below. The page
+   itself only ever calls Access.signedIn/signIn/signOut/record, so replacing
+   today's capture with verified email + server-side file serving means
+   rewriting that object and nothing else. Keep it that way.
 
-   Progressive enhancement, deliberately: the buttons are real <a href> links
-   to the PDFs and work with JavaScript off. We intercept the click instead of
-   replacing the link.
+   Today's mechanism: Chilli Pepper's compact form, shown once. It brings its
+   own bot check, remembers the visitor on its own origin, and writes to the
+   CRM. It cannot verify that an address is real or reachable, and because the
+   PDFs sit at public URLs the gate is cosmetic -- anyone can copy a link. Both
+   of those are what step 2 fixes.
 
-   This is a SOFT gate and cannot be anything else on a static site -- the PDFs
-   sit at public URLs, so anyone can copy a link and skip the form. That is the
-   accepted trade: it captures the willing majority without an auth layer, and
-   never blocks a determined reader. A hard gate would mean serving the files
-   through a function that checks a token. */
+   Progressive enhancement: every row is a real <a href> to its PDF and works
+   with JavaScript off. We intercept clicks rather than replacing the links. */
 (function () {
   var FORM = 'https://chillipepper.online/lead-form.html';
-  var KEY = 'fd0ec135-56c9-47c8-9dec-5d2369788988';   /* public lead-capture key, submit-only */
-  var KNOWN_FLAG = 'hestora-resources-known';
+  var KEY = 'fd0ec135-56c9-47c8-9dec-5d2369788988';   /* public, submit-only */
+  var FLAG = 'hestora-resources-known';
   var ORIGIN_RE = /^https:\/\/([a-z0-9-]+\.)?chillipepper\.online$/i;
 
-  var visible = null;   /* the panel currently showing a form, if any */
-  var frames = [];      /* live iframes, so a message can be matched to its own */
-
-  /* Recorder iframes go here rather than inside a display:none panel, so there
-     is no doubt about whether the browser runs them. */
+  var frames = [];   /* live iframes, so a message is matched to its own */
   var attic = document.createElement('div');
   attic.setAttribute('aria-hidden', 'true');
   attic.style.cssText = 'position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden';
 
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-    });
-  }
-  function isKnown() { try { return localStorage.getItem(KNOWN_FLAG) === '1'; } catch (e) { return false; } }
-  function setKnown() { try { localStorage.setItem(KNOWN_FLAG, '1'); } catch (e) {} }
-  function forgetKnown() { try { localStorage.removeItem(KNOWN_FLAG); } catch (e) {} }
+  var Access = {
+    signedIn: function () {
+      try { return localStorage.getItem(FLAG) === '1'; } catch (e) { return false; }
+    },
+    /* No identity to show yet: the email lives in the form's own storage on its
+       own origin, which this page cannot read. Verified sign-in will return the
+       address here and the bar will name it. */
+    who: function () { return null; },
+    signOut: function () {
+      try { localStorage.removeItem(FLAG); } catch (e) {}
+    },
+    /* Show the capture form. done() runs once we are signed in. */
+    signIn: function (host, label, done) {
+      var frame = document.createElement('iframe');
+      frame.className = 'access-frame';
+      frame.title = 'Sign in to open the Hestora documents';
+      frame.src = url(label || 'Resources', false);
+      host.appendChild(frame);
+      frames.push({ frame: frame, silent: false, done: done });
+      return frame;
+    },
+    /* Log which document was opened, against whoever is signed in. */
+    record: function (label) {
+      if (!this.signedIn()) return;
+      var frame = document.createElement('iframe');
+      frame.src = url(label, true);
+      frames.push({ frame: frame, silent: true });
+      attic.appendChild(frame);
+      setTimeout(function () {
+        if (frame.parentNode) { drop(frame); frame.remove(); }
+      }, 20000);
+    }
+  };
 
   function url(label, auto) {
     return FORM + '?key=' + encodeURIComponent(KEY) +
@@ -202,127 +232,111 @@ footer a{color:#8fd3bf}
       (auto ? '&auto=1' : '') +
       '&source=' + encodeURIComponent('Resources — ' + label);
   }
+  function drop(frame) { frames = frames.filter(function (f) { return f.frame !== frame; }); }
 
-  function forget(frame) {
-    frames = frames.filter(function (f) { return f.frame !== frame; });
+  /* ── The page ── */
+  var bar = document.getElementById('access');
+  var rows = [].slice.call(document.querySelectorAll('a.js-doc'));
+
+  function render(opening) {
+    bar.innerHTML = '';
+    if (Access.signedIn()) {
+      var who = Access.who();
+      var p = document.createElement('p');
+      p.className = 'access-who';
+      p.innerHTML = who
+        ? 'Signed in as <b>' + esc(who) + '</b>. All documents are open below.'
+        : 'You&rsquo;re signed in. All documents are open below.';
+      var out = document.createElement('button');
+      out.type = 'button';
+      out.className = 'access-link';
+      out.textContent = 'Sign out';
+      out.addEventListener('click', function () { Access.signOut(); render(); });
+      bar.appendChild(p);
+      bar.appendChild(out);
+    } else {
+      var msg = document.createElement('p');
+      msg.className = 'access-msg';
+      msg.innerHTML = '<strong>Sign in to open these documents.</strong> ' +
+        'Your name and email, once &mdash; then all five are open. ' +
+        'See our <a href="/privacy">Privacy Policy</a>.';
+      var act = document.createElement('button');
+      act.type = 'button';
+      act.className = 'access-act';
+      act.textContent = 'Sign in';
+      act.addEventListener('click', function () { promptSignIn(null); });
+      bar.appendChild(msg);
+      bar.appendChild(act);
+    }
+    paintRows();
   }
 
-  function closePanel(panel) {
-    if (!panel) return;
-    var f = panel.querySelector('iframe');
-    if (f) forget(f);
-    panel.classList.remove('open');
-    panel.innerHTML = '';
-    if (visible === panel) visible = null;
-  }
-
-  /* Confirmation plus a real link. We do not open the PDF from script here --
-     this runs in a postMessage handler, not a click, so a popup blocker would
-     swallow it. The link is a genuine gesture and always works. */
-  function showDone(item, opened) {
-    closePanel(item.panel);
-    item.panel.innerHTML =
-      '<p class="dl-done"><strong>Thank you.</strong> Your copy of the ' + esc(item.label) +
-      (opened ? ' is opening in a new tab.' : ' is ready.') + '</p>' +
-      '<a class="dl-open" href="' + esc(item.href) + '" target="_blank" rel="noopener">Open the document</a>';
-    item.panel.classList.add('open');
-    var link = item.panel.querySelector('.dl-open');
-    if (link && !opened) link.focus();
-    item.a.setAttribute('data-captured', '1');
-  }
-
-  /* Known visitor: the document is already opening, so all that is left is to
-     log which one against them. No UI -- the form submits itself. */
-  function record(item, opened) {
-    var frame = document.createElement('iframe');
-    frame.title = '';
-    frame.src = url(item.label, true);
-    frames.push({ frame: frame, item: item, silent: true, opened: opened });
-    attic.appendChild(frame);
-    /* Never leave one running: if nothing comes back, bin it. The download has
-       already happened either way -- losing one attribution beats a leak. */
-    setTimeout(function () {
-      if (frame.parentNode) { forget(frame); frame.remove(); }
-    }, 20000);
-  }
-
-  function showForm(item, note) {
-    closePanel(visible);
-    var frame = document.createElement('iframe');
-    frame.className = 'dl-frame';
-    frame.title = 'Get the ' + item.label;
-    frame.src = url(item.label, false);
-
-    item.panel.innerHTML =
-      '<div class="dl-title">Where should we send the ' + esc(item.label) + '?</div>' +
-      /* One line only. What we record with the lead is set out in the Privacy
-         Policy, which is what it is for; restating it here made a two-field
-         form look heavier than it is. */
-      '<p class="dl-sub">' + (note ? esc(note) + ' ' : '') +
-      'Just your name and email &mdash; it opens straight away. ' +
-      'See our <a href="/privacy">Privacy Policy</a>.</p>';
-    item.panel.appendChild(frame);
+  function promptSignIn(pending) {
+    bar.innerHTML = '';
+    var msg = document.createElement('p');
+    msg.className = 'access-msg';
+    msg.innerHTML = pending
+      ? '<strong>Sign in to open the ' + esc(pending.label) + '.</strong> Your name and email, once &mdash; then all five are open.'
+      : '<strong>Sign in to open these documents.</strong> Your name and email, once &mdash; then all five are open.';
+    bar.appendChild(msg);
+    var host = document.createElement('div');
+    host.className = 'access-form';
+    bar.appendChild(host);
+    Access.signIn(host, pending ? pending.label : 'Resources', function () {
+      render();
+      /* Put them one keystroke from what they came for, rather than navigating
+         there ourselves. This runs on a message, not a click, so opening a tab
+         would be popup-blocked and navigating the page would throw away the
+         library they just unlocked. Focusing the row keeps both. */
+      if (pending && pending.a) {
+        pending.a.focus();
+        pending.a.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
     var cancel = document.createElement('button');
     cancel.type = 'button';
-    cancel.className = 'dl-cancel';
+    cancel.className = 'access-link';
     cancel.textContent = 'Cancel';
-    cancel.addEventListener('click', function () { closePanel(item.panel); item.a.focus(); });
-    item.panel.appendChild(cancel);
-
-    frames.push({ frame: frame, item: item, silent: false });
-    item.panel.classList.add('open');
-    visible = item.panel;
+    cancel.addEventListener('click', function () { render(); });
+    bar.appendChild(cancel);
   }
 
-  document.querySelectorAll('a.js-gated').forEach(function (a) {
-    var panel = a.nextElementSibling;
-    if (!panel || !panel.classList.contains('dl-panel')) return;
-    var item = {
-      a: a, panel: panel,
-      label: a.getAttribute('data-doc') || 'document',
-      href: a.getAttribute('href')
-    };
+  function paintRows() {
+    var open = Access.signedIn();
+    rows.forEach(function (a) {
+      a.textContent = open ? 'Open' : 'Sign in to open';
+      if (open) a.removeAttribute('data-locked');
+      else a.setAttribute('data-locked', '1');
+    });
+  }
 
+  rows.forEach(function (a) {
     a.addEventListener('click', function (ev) {
-      /* Already fetched this one in this visit -- let the link be a link. */
-      if (a.getAttribute('data-captured') === '1') return;
-      ev.preventDefault();
-
-      if (visible === panel) { closePanel(panel); return; }
-
-      if (isKnown()) {
-        /* window.open is legitimate here: we are inside a real click. */
-        var win = null;
-        try { win = window.open(item.href, '_blank'); } catch (e) {}
-        var opened = !!win;
-        record(item, opened);
-        showDone(item, opened);
-        /* Give them a way out if the details on file are not theirs. */
-        var not = document.createElement('button');
-        not.type = 'button';
-        not.className = 'dl-cancel';
-        not.textContent = 'Recorded against a different email? Change it';
-        not.addEventListener('click', function () {
-          forgetKnown();
-          a.removeAttribute('data-captured');
-          showForm(item);
-        });
-        item.panel.appendChild(not);
+      if (!Access.signedIn()) {
+        ev.preventDefault();
+        promptSignIn({ a: a, label: a.getAttribute('data-doc') || 'document' });
+        bar.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
-
-      showForm(item);
+      /* Signed in: let the link open the PDF, and log it on the way past. */
+      Access.record(a.getAttribute('data-doc') || 'document');
     });
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener');
   });
 
-  /* Messages from the form. Origin is checked first: without it, any frame on
-     the page could claim a capture and unlock a document. e.source then tells
-     us which iframe spoke, so a silent recorder is never confused with a form. */
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  /* Messages from the form. Origin first -- otherwise any frame on the page
+     could claim a capture. e.source then says which frame spoke. */
   window.addEventListener('message', function (e) {
     if (!ORIGIN_RE.test(e.origin || '')) return;
     var d = e.data;
     if (!d || typeof d !== 'object') return;
-
     var ctx = null;
     for (var i = 0; i < frames.length; i++) {
       if (frames[i].frame.contentWindow === e.source) { ctx = frames[i]; break; }
@@ -330,42 +344,28 @@ footer a{color:#8fd3bf}
     if (!ctx) return;
 
     if (d.type === 'cp-lead-captured') {
-      setKnown();
-      if (ctx.silent) { forget(ctx.frame); ctx.frame.remove(); }
-      else showDone(ctx.item, false);
+      try { localStorage.setItem(FLAG, '1'); } catch (err) {}
+      if (ctx.silent) { drop(ctx.frame); ctx.frame.remove(); }
+      else if (ctx.done) { drop(ctx.frame); ctx.done(); }
       return;
     }
-
-    /* We thought we knew them, the form does not. Storage was cleared, or the
-       browser refused it. Ask again rather than lose the attribution. */
+    /* Its store was cleared but ours survived: ask again rather than lose the
+       record. Only reachable on the silent path. */
     if (d.type === 'cp-lead-needs-details') {
-      forgetKnown();
-      forget(ctx.frame);
+      Access.signOut();
+      drop(ctx.frame);
       ctx.frame.remove();
-      if (ctx.silent) {
-        ctx.item.a.removeAttribute('data-captured');
-        showForm(ctx.item, ctx.opened
-          ? 'Your document is open in another tab.'
-          : 'One more thing before we send it.');
-      }
+      if (ctx.silent) render();
       return;
     }
-
     if (d.type === 'cp-form-height' && !ctx.silent) {
       var h = parseInt(d.height, 10);
       if (h > 80 && h < 2000) ctx.frame.style.height = (h + 8) + 'px';
     }
   });
 
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && visible) {
-      var a = visible.previousElementSibling;
-      closePanel(visible);
-      if (a) a.focus();
-    }
-  });
-
   document.body.appendChild(attic);
+  render();
 })();
 </script>
 <script src="assets/consent.js" defer></script>
