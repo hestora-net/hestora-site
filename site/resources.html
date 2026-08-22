@@ -74,6 +74,38 @@ a{color:var(--blue)}
 .docopen:hover{background:var(--teal);color:#fff}
 .docopen[data-locked="1"]{border-color:var(--border);color:var(--muted)}
 .docopen[data-locked="1"]:hover{background:var(--bg);color:var(--ink)}
+/* ── Two halves: Read, and Use ──
+   These were one list, and the portal sat at the bottom of it styled exactly
+   like a PDF row -- so a live tool with its own sign-in read as a sixth
+   document. Separating them says plainly that they are different kinds of
+   thing, and gives the portal somewhere to live as the page grows.
+   Equal visual weight on purpose: neither half is the poor relation. */
+.half{margin:0 0 40px}
+.half-head{margin:0 0 6px;padding-bottom:9px;border-bottom:2px solid var(--grn);
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.half-head h2{font-family:'Manrope',sans-serif;font-weight:800;font-size:21px;
+  letter-spacing:-.02em;color:var(--grn);margin:0}
+.half-head .half-kind{font-size:12px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--muted)}
+.half-lede{font-size:14.5px;color:var(--muted);margin:0 0 18px;line-height:1.55}
+
+/* The portal panel. Deliberately NOT .js-doc and not a .docrow: the Chilli
+   Pepper gate must never touch it, because it has its own sign-in. */
+.portal{background:#fff;border:1px solid var(--border);border-left:4px solid var(--blue);
+  border-radius:10px;padding:22px 24px;display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.portal-main{flex:1 1 300px;min-width:0}
+.portal h3{font-family:'Manrope',sans-serif;font-weight:700;font-size:17px;
+  color:var(--grn);margin:0 0 6px}
+.portal p{font-size:14px;color:var(--muted);margin:0 0 10px;line-height:1.55}
+.portal ul{margin:0;padding:0;list-style:none;font-size:14px;color:var(--ink)}
+.portal li{padding:3px 0 3px 18px;position:relative}
+.portal li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;
+  border-radius:50%;background:var(--blue)}
+.portal-go{flex:0 0 auto;font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;
+  text-decoration:none;padding:11px 20px;border-radius:8px;white-space:nowrap;
+  background:var(--blue);color:#fff;border:1.5px solid var(--blue)}
+.portal-go:hover{background:#0f7c8d;border-color:#0f7c8d}
+@media(max-width:600px){.portal{gap:16px}.portal-go{width:100%;text-align:center}}
 @media(max-width:600px){
   .docrow{align-items:flex-start;flex-wrap:wrap}
   .doctag{display:none}
@@ -95,11 +127,17 @@ footer a{color:#8fd3bf}
 <h1>Resources</h1>
 <p class="updated">Documents on the Hestora domestic thermal energy store · Updated August 2026</p>
 
-<p>The documents below set out what Hestora is, the real-home data behind its sizing, our running-cost and carbon modelling, and the route to market — including the monitored pilot beginning in November 2026.</p>
+<p>Two things here: documents to read, and a portal to use. The documents set out what Hestora is, the real-home data behind its sizing, our running-cost and carbon modelling, and the route to market — including the monitored pilot beginning in November 2026. The portal is where you model a property yourself.</p>
+
+<section class="half">
+  <div class="half-head"><h2>Read</h2><span class="half-kind">Five documents &middot; PDF</span></div>
+  <p class="half-lede">Name and email once, then all five open. Download and keep them.</p>
 
 <!-- Access bar. One gate for the whole library rather than a form per
      document: the old per-document panels stacked up, pushed the list off
-     screen, and made the visitor answer the same question five times. -->
+     screen, and made the visitor answer the same question five times.
+     Lives inside the Read half, because that is exactly what it gates -- the
+     portal below has its own sign-in and is untouched by it. -->
 <div class="access" id="access"></div>
 
 <section class="group">
@@ -158,6 +196,26 @@ footer a{color:#8fd3bf}
     </li>
   </ul>
 </section>
+
+</section><!-- /Read -->
+
+<section class="half">
+  <div class="half-head"><h2>Use</h2><span class="half-kind">Partner portal &middot; hestora-portal.net</span></div>
+  <p class="half-lede">A separate sign-in from the one above. Sign in with your email address &mdash; we send you a link, there is no password to set up, and everything in the portal is then open to you.</p>
+
+  <div class="portal">
+    <div class="portal-main">
+      <h3>Model your own property</h3>
+      <p>Run a property through the government&rsquo;s real Home Energy Model engine and see how it compares.</p>
+      <ul>
+        <li>Future Homes Standard target and property modelling</li>
+        <li>Running costs against a gas boiler and a heat pump</li>
+        <li>Technical knowledge base &mdash; nine reference documents</li>
+      </ul>
+    </div>
+    <a class="portal-go" href="https://www.hestora-portal.net/" target="_blank" rel="noopener">Open the portal &rarr;</a>
+  </div>
+</section><!-- /Use -->
 
 <p style="margin-top:32px">Questions, or interested in the pilot programme? Email <a href="mailto:hello@hestora.net">hello@hestora.net</a>.</p>
 </main>
