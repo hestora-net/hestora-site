@@ -10,9 +10,15 @@
 # Apex -> www is handled by setting www.hestora.net as the PRIMARY domain in
 # Netlify's Domain management, not by a redirect rule here.
 #
+# Redirect RULES live in site/_redirects, not in this file. Netlify reads that file
+# from the publish root, so it has to sit inside site/ -- a copy next to this one is
+# silently ignored. It currently 301s the hestora-site.netlify.app subdomain to the
+# real hostname.
+#
 # Extensionless URLs (/privacy, /cookies, /resources) are Netlify's default
-# behaviour for .html files, which is what sitemap.xml already advertises.
-# Verify on the deploy preview before the DNS cutover.
+# behaviour for .html files, which is what sitemap.xml advertises and what every
+# internal link in the repo now uses directly. Confirmed working since the DNS
+# cutover on 17 Aug 2026; both /privacy and /privacy.html return 200.
 
 [[headers]]
   # Images and the explainer video are NOT fingerprinted -- vessel-1.jpg keeps its
@@ -35,8 +41,16 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
-    # No Content-Security-Policy yet. The page pulls Google Fonts, embeds
-    # youtube-nocookie, loads Microsoft Clarity via assets/consent.js, and hosts a
-    # chillipepper.online lead form -- a CSP written blind would break at least one
-    # of those. Worth adding deliberately, with each source enumerated and tested on
-    # a deploy preview.
+    # No Content-Security-Policy yet. The full set of origins is small and known:
+    #   style-src  fonts.googleapis.com          font-src  fonts.gstatic.com
+    #   script-src static.cloudflareinsights.com, *.clarity.ms
+    #   frame-src  chillipepper.online           img-src   'self' data:
+    #   media-src  'self'                        connect-src *.clarity.ms
+    # Note this list does NOT include YouTube. The explainer is a self-hosted <video>;
+    # the only youtube-nocookie reference is loadYT() in index.html, which nothing
+    # calls -- an earlier version of this comment listed it as a blocker in error.
+    #
+    # The real obstacle is 'unsafe-inline' for script-src: the pages use inline
+    # onclick= attributes and href="javascript:void(0)" throughout, so a CSP would
+    # have to allow inline script, which buys much less than it looks like. Removing
+    # those handlers first is what makes a CSP worth adding. Test on a deploy preview.

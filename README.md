@@ -23,20 +23,30 @@ site/
 ├── index.html        the whole homepage, single file (~960 KB)
 ├── privacy.html  cookies.html  resources.html
 ├── robots.txt  sitemap.xml
+├── _redirects        Netlify redirect rules -- must live here, not at the repo root
 ├── assets/           images, og-image, explainer video + poster, consent.js
 └── docs/             the five published PDFs (white paper, sector briefings)
 ```
 
 `sitemap.xml` advertises extensionless URLs (`/privacy`, `/resources`). Netlify serves
-those from the `.html` files by default — no redirect rules needed.
+those from the `.html` files by default, so no rule is needed to make them work.
+(`_redirects` exists for a different job — see below.)
 
-Two consequences of that worth knowing:
+Two things follow from that:
 
-- **Netlify rewrites internal links at deploy time.** `href="privacy.html"` in the repo is
-  served as `href='/privacy'`, and double quotes become single. So the deployed HTML is
-  never byte-identical to what's committed, and a live-vs-repo diff showing only those
-  lines means the deploy is current, not stale. This applies to HTML only — a URL built
-  inside a `.js` file is left alone, which is why `consent.js` writes `/cookies` directly.
+- **Write internal links in the extensionless form yourself.** `href="/privacy"`, not
+  `href="privacy.html"`. Netlify's post-processing used to rewrite the `.html` form for us,
+  but only in HTML — never in JavaScript — so a link built inside `consent.js` had to be
+  canonical already, and the deployed HTML was never byte-identical to what was committed.
+  As of 22 Aug 2026 every internal link in the repo is canonical to begin with, so that
+  rewrite has nothing left to do and repo and deploy now agree. Keep it that way: a new
+  `.html` link would quietly reintroduce the split.
+
+  This is not cosmetic. While internal links pointed at `resources.html` and the sitemap
+  advertised `/resources`, Google saw the sitemap URL as an orphan with nothing linking to
+  it and never crawled the page — *"URL is unknown to Google — no referring sitemaps
+  detected, no referring page detected"* on 22 Aug. Bing, which leans on the sitemap more,
+  had it indexed fine. Both forms still return 200, so old bookmarks keep working.
 - **Both forms return 200.** `/privacy` and `/privacy.html` each serve the page rather than
   one redirecting to the other, so every page carries a `rel="canonical"` pointing at the
   extensionless form to keep search engines on a single URL. Keep that tag on any new page.
@@ -57,6 +67,23 @@ is a reasonable model.
 
 **Never commit credential files.** `.gitignore` blocks `.env` files and analytics
 config files. Anything secret belongs in a password manager, never in this repo.
+
+**The Product schema in `index.html` has no `offers` block, deliberately.** Google Search
+Console will flag the Product entity as missing `image` and report a critical Merchant
+listings error. **Do not fix that by adding an `image` field.** The `offers` object was
+removed on 22 Aug 2026 because it was false: it declared a `schema.org/PreOrder` — which
+means the item can be ordered *now* — on a site with no cart, no checkout, and no orders
+until 2027. It also published `£3,500` as a machine-readable fact, stripped of the `**`
+caveats the page shows, with `priceValidUntil` asserting the price holds to the end of
+2027. Restoring product rich results means publishing a firm price ahead of launch: a
+commercial decision, worth a word with whoever owns the consumer terms first.
+
+**`_redirects` must live in `site/`, not the repo root.** `netlify.toml` sets
+`publish = "site"`, and Netlify only reads `_redirects` from the publish root — a copy at
+the repo root is silently ignored. It currently does one job: 301s the Netlify-assigned
+subdomain `hestora-site.netlify.app` to `www.hestora.net`, so that host stops competing
+with the real site for the same content. Apex → www is *not* here; that is set in Netlify
+Domain management by making `www.hestora.net` the primary domain.
 
 **`assets/consent.js` and `cookies.html` must stay consistent.** The consent script has a
 `COOKIELESS_BEFORE_CONSENT` flag governing how Microsoft Clarity loads; the cookie policy
