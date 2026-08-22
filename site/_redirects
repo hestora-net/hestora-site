@@ -1,0 +1,20 @@
+# Netlify redirect rules. This file must sit in the publish root (site/), which is
+# what netlify.toml points at -- a _redirects at the repo root is never read.
+#
+# The Netlify-assigned subdomain serves the entire site publicly and is indexable,
+# so it competes with www.hestora.net for the same content: a third hostname
+# splitting traffic and creating duplicate content for Google. Clarity recorded
+# real visits landing on it. Redirecting eliminates the duplicate rather than
+# merely de-listing it, and folds those visits back into the main domain.
+#
+# The `!` (force) is required: without it Netlify serves the existing page instead
+# of redirecting, because a matching file exists at that path.
+#
+# Deploy previews are unaffected -- they use deploy-preview-N--hestora-site.netlify.app,
+# which does not match these rules.
+#
+# Apex -> www is handled in Netlify Domain management (www.hestora.net is the
+# PRIMARY domain), not here. See the note at the top of netlify.toml.
+
+http://hestora-site.netlify.app/*   https://www.hestora.net/:splat  301!
+https://hestora-site.netlify.app/*  https://www.hestora.net/:splat  301!
