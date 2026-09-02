@@ -104,8 +104,7 @@ nav.scrolled{background:rgba(253,252,249,0.95);backdrop-filter:blur(14px);border
 .nav-logo-dark{display:none}
 nav.scrolled .nav-logo-light{display:none}
 nav.scrolled .nav-logo-dark{display:block}
-.nav-links,.nav-cta{opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
-nav.scrolled .nav-links,nav.scrolled .nav-cta{opacity:1;visibility:visible}
+.nav-links,.nav-cta{opacity:1;visibility:visible}
 .nav-logo{height:64px;width:auto}
 nav.scrolled .nav-logo{height:38px}
 .nav-links{display:flex;gap:4px;background:var(--offwhite);border-radius:40px;padding:5px}
@@ -132,6 +131,19 @@ nav.scrolled .nav-logo{height:38px}
 .hero .btn-secondary:hover{background:#4CA69D;transform:translateY(-1px)}
 .hero .btn-amber{background:#F59435;color:var(--on-amber);border-radius:40px;padding:15px 32px;font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;text-decoration:none;transition:all .2s;border:none}
 .hero .btn-amber:hover{background:#F9A551;transform:translateY(-1px)}
+/* Hero CTAs — arrows signal what a click does: → scrolls, ↗ leaves the page */
+.hero-ctas a{display:inline-flex;align-items:center;gap:9px}
+.hero-ctas .btn-arrow{font-size:17px;line-height:1;transition:transform .2s}
+.hero-ctas a:hover .btn-arrow{transform:translateX(4px)}
+.hero-ctas a:hover .btn-arrow-out{transform:translate(3px,-3px)}
+.hero .btn-secondary:hover{background:#4CA69D;transform:translateY(-1px);box-shadow:0 6px 18px rgba(63,141,134,.35)}
+.hero .btn-primary:hover{background:#E0563F;transform:translateY(-1px);box-shadow:0 6px 18px rgba(215,71,50,.35)}
+.hero .btn-amber:hover{background:#F9A551;transform:translateY(-1px);box-shadow:0 6px 18px rgba(245,148,53,.35)}
+.btn-amber:focus-visible{outline:3px solid #fff;outline-offset:3px}
+/* Resources nav link — distinct from the on-page anchors */
+.nav-links a.nav-resources{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.nav-links a.nav-resources:hover{background:var(--amber);color:var(--on-amber)}
+
 .hero-trust{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .hero .trust-tag{font-size:13px;color:rgba(255,255,255,0.82);display:flex;align-items:center;gap:8px;padding:10px 18px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:30px}
 .hero .trust-tag-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
@@ -748,13 +760,13 @@ html{scroll-padding-top:68px}
     <a href="#features">Why Hestora</a>
     <a href="#who">Who we are</a>
     <a href="#news">News</a>
-    <a href="/resources">Resources</a>
+    <a href="/resources" class="nav-resources">Resources</a>
   </div>
   <a href="#contact" class="nav-cta">Register interest</a>
   <label class="nav-burger" id="nav-burger" for="nav-toggle" aria-label="Menu" role="button"><span></span><span></span><span></span></label>
 </nav>
 <input type="checkbox" id="nav-toggle" class="nav-toggle-cb" aria-label="Toggle navigation menu" aria-controls="nav-mobile">
-<div class="nav-mobile" id="nav-mobile"><a href="#how" onclick="document.getElementById('nav-toggle').checked=false">How it works</a><a href="#features" onclick="document.getElementById('nav-toggle').checked=false">Why Hestora</a><a href="#who" onclick="document.getElementById('nav-toggle').checked=false">Who we are</a><a href="#news" onclick="document.getElementById('nav-toggle').checked=false">News</a><a href="/resources">Resources</a><a href="#contact" onclick="document.getElementById('nav-toggle').checked=false">Register interest</a></div>
+<div class="nav-mobile" id="nav-mobile"><a href="#how" onclick="document.getElementById('nav-toggle').checked=false">How it works</a><a href="#features" onclick="document.getElementById('nav-toggle').checked=false">Why Hestora</a><a href="#who" onclick="document.getElementById('nav-toggle').checked=false">Who we are</a><a href="#news" onclick="document.getElementById('nav-toggle').checked=false">News</a><a href="/resources" class="nav-resources-m">Resources</a><a href="#contact" onclick="document.getElementById('nav-toggle').checked=false">Register interest</a></div>
 
 <!-- HERO -->
 <section class="hero" id="top">
@@ -764,9 +776,9 @@ html{scroll-padding-top:68px}
       <h1 class="hero-title">Your home heating, reimagined.</h1>
       <p class="hero-sub">Cut your heating bill overnight. No gas. <span style="white-space:nowrap">No outdoor unit. No disruption.</span></p>
       <div class="hero-ctas">
-        <a href="#how" class="btn-secondary">How it works</a>
-        <a href="#contact" class="btn-primary">Register interest</a>
-        <a href="/resources" class="btn-amber">Resources</a>
+        <a href="#how" class="btn-secondary">How it works<span class="btn-arrow" aria-hidden="true">→</span></a>
+        <a href="#contact" class="btn-primary">Register interest<span class="btn-arrow" aria-hidden="true">→</span></a>
+        <a href="/resources" class="btn-amber">Resources &amp; downloads<span class="btn-arrow btn-arrow-out" aria-hidden="true">↗</span></a>
       </div>
       <div class="hero-trust">
         <span class="trust-tag"><span class="trust-tag-dot" style="background:#D74732"></span>Certified prototype</span>
@@ -957,6 +969,7 @@ html{scroll-padding-top:68px}
     <h2 class="stitle">News from Hestora.</h2>
     <p class="ssub">Progress on prototypes, home trials, and our journey to bring zero-emission heating to the homes we already live in.</p>
     <div class="news-grid" id="news-grid"></div>
+    <p style="text-align:center;margin-top:34px"><a href="/news" style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;color:#1491A6;text-decoration:none">All news<span aria-hidden="true" style="margin-left:7px">&rarr;</span></a></p>
   </div>
 </section>
 
@@ -1183,6 +1196,7 @@ document.querySelectorAll('.form-radio input[type=radio]').forEach(function(inp)
 const NEWS = [
   {
     tag: "Development",
+    slug: "engineering-the-future-of-home-heating",
     image: "assets/news-3.jpg",
     accent: "#D74732", tint: "rgba(199,72,53,0.1)",
     date: "June 2026",
@@ -1198,6 +1212,7 @@ const NEWS = [
   },
   {
     tag: "Designed for purpose",
+    slug: "engineering-a-direct-swap",
     image: "assets/news-2.jpg",
     accent: "#F59435", tint: "rgba(231,149,61,0.1)",
     date: "June 2026",
@@ -1213,6 +1228,7 @@ const NEWS = [
   },
   {
     tag: "Mission",
+    slug: "a-data-driven-approach-to-net-zero",
     image: "assets/news-1.jpg",
     accent: "#1491A6", tint: "rgba(66,145,165,0.1)",
     date: "May 2026",
@@ -1241,7 +1257,7 @@ function renderNews() {
     const thumb = n.image
       ? `<div class="news-thumb"><img src="${n.image}" alt="${n.title}" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,${n.accent},${n.tint})'"></div>`
       : `<div class="news-thumb"><div class="news-thumb-fallback" style="--c1:${n.accent};--c2:${n.tint}">${NI[i % NI.length]}</div></div>`;
-    return `<a class="news-card" href="javascript:void(0)" onclick="openNews(${i})" style="--news-accent:${n.accent};--news-tint:${n.tint}">
+    return `<a class="news-card" href="/news/${n.slug}" data-news="${i}" style="--news-accent:${n.accent};--news-tint:${n.tint}">
       ${thumb}
       <div class="news-body">
         <div class="news-meta"><span class="news-tag">${n.tag}</span><span class="news-date">${n.date}</span></div>
@@ -1253,6 +1269,19 @@ function renderNews() {
   }).join('');
 }
 renderNews();
+
+/* Open the modal on a plain left-click, but never hijack a click that the
+   visitor meant to be a navigation: modified clicks (cmd/ctrl/shift/alt),
+   middle-clicks, and every crawler and JS-off visitor get the real page at
+   /news/<slug>. The href is the source of truth; this is decoration on top. */
+const newsGrid = document.getElementById('news-grid');
+if (newsGrid) newsGrid.addEventListener('click', function(e) {
+  const card = e.target.closest('.news-card');
+  if (!card) return;
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+  e.preventDefault();
+  openNews(Number(card.dataset.news));
+});
 
 function openNews(i) {
   const n = NEWS[i];
