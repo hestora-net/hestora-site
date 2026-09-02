@@ -52,7 +52,7 @@ META = {
         "slug": "engineering-a-direct-swap",
         "description": (
             "How Hestora matches a gas boiler's output with high-temperature, high-pressure "
-            "design -- a full day of heat, stored overnight, in a boiler-sized footprint."
+            "design — a full day of heat, stored overnight, in a boiler-sized footprint."
         ),
         "keywords": "electric heating, boiler replacement, off-peak electricity, no radiator upgrade",
         "published": "2026-06-01",
