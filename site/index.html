@@ -1107,9 +1107,8 @@ html{scroll-padding-top:68px}
              carry a note saying 1250px was needed while being set to 900 -- too short clipped
              the expanded manual-address block and the Cloudflare check. 1250 is the safe
              pre-resize value: too tall merely leaves a gap for a moment, too short clips. -->
-        <!-- Served from portal.hestora.net since Nov 2026 (chillipepper.online now 301s there).
-             Point straight at it: the redirect costs a round trip, and the Turnstile widget's
-             allowed-hostname list in Cloudflare must include portal.hestora.net. -->
+        <!-- Served from portal.hestora.net. The Turnstile widget's allowed-hostname list in
+             Cloudflare must include portal.hestora.net, or the bot check fails (error 110200). -->
         <iframe id="lead-iframe" src="https://portal.hestora.net/lead-form.html?key=fd0ec135-56c9-47c8-9dec-5d2369788988" style="width:100%;max-width:560px;height:1250px;border:none;display:block;margin:0 auto" title="Register your interest — contact form" loading="lazy"></iframe>
         <p class="form-note">We'll only use your details to keep you updated about Hestora. No spam, no sharing with third parties. Unsubscribe at any time.</p>
       </div>
@@ -1398,7 +1397,7 @@ document.addEventListener('DOMContentLoaded', function() {
 window.addEventListener('message', function(e){
   /* Exact origins, not a substring: the form moved to portal.hestora.net; the old host is kept
      only in case a cached page still loads it. A substring test would also accept lookalikes. */
-  if(!/^https:\/\/(portal\.hestora\.net|([a-z0-9-]+\.)?chillipepper\.online)$/i.test(e.origin||'')) return;
+  if(e.origin!=='https://portal.hestora.net') return;
   var d=e.data, h=null;
   if(typeof d==='number') h=d;
   else if(d && typeof d==='object') h=d.height||d.frameHeight||d.scrollHeight||d.value;
