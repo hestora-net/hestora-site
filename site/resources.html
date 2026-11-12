@@ -240,10 +240,13 @@ footer a{color:#8fd3bf}
    Progressive enhancement: every row is a real <a href> to its PDF and works
    with JavaScript off. We intercept clicks rather than replacing the links. */
 (function () {
-  var FORM = 'https://chillipepper.online/lead-form.html';
+  /* The form moved to portal.hestora.net in Nov 2026 (chillipepper.online 301s there).
+     Its messages now come from that origin, so it must be accepted below or sign-in
+     never completes. The old host stays accepted in case a cached page still loads it. */
+  var FORM = 'https://portal.hestora.net/lead-form.html';
   var KEY = 'fd0ec135-56c9-47c8-9dec-5d2369788988';   /* public, submit-only */
   var FLAG = 'hestora-resources-known';
-  var ORIGIN_RE = /^https:\/\/([a-z0-9-]+\.)?chillipepper\.online$/i;
+  var ORIGIN_RE = /^https:\/\/(portal\.hestora\.net|([a-z0-9-]+\.)?chillipepper\.online)$/i;
 
   var frames = [];   /* live iframes, so a message is matched to its own */
   var attic = document.createElement('div');

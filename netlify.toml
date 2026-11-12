@@ -44,7 +44,7 @@
     # No Content-Security-Policy yet. The full set of origins is small and known:
     #   style-src  fonts.googleapis.com          font-src  fonts.gstatic.com
     #   script-src static.cloudflareinsights.com, *.clarity.ms
-    #   frame-src  chillipepper.online           img-src   'self' data:
+    #   frame-src  portal.hestora.net            img-src   'self' data:
     #   media-src  'self'                        connect-src *.clarity.ms
     # Note this list does NOT include YouTube. The explainer is a self-hosted <video>;
     # the only youtube-nocookie reference is loadYT() in index.html, which nothing
