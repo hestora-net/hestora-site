@@ -91,7 +91,7 @@ describes whichever setting is live. Change one, change the other.
 
 The same rule covers anything else that measures visitors. `cookies.html` documents every
 tracking technology on the site — currently the consent preference in local storage, the
-Chilli Pepper form, Cloudflare Web Analytics and Microsoft Clarity. **Adding or removing a
+portal.hestora.net lead form, Cloudflare Web Analytics and Microsoft Clarity. **Adding or removing a
 script that observes visitors means editing that table in the same commit.** The Cloudflare
 beacon was added in Aug 2026 without updating the policy, and the gap went unnoticed until
 the site was reviewed.
