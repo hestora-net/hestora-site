@@ -172,7 +172,7 @@ footer a{{color:rgba(255,255,255,.62)}}
 </div></header>
 """
 
-FOOTER = """<footer>&copy; 2026 Hestora Limited &middot; Company No. 16856062 &middot; Registered in England &amp; Wales &middot; <a href="/resources">Resources</a> &middot; <a href="/privacy">Privacy Policy</a> &middot; <a href="/cookies">Cookie Policy</a></footer>
+FOOTER = """<footer>&copy; 2026 Hestora Limited &middot; Company No. 16856062 &middot; Registered in England &amp; Wales &middot; <a href="tel:+447968421651">07968 421651</a> &middot; <a href="/resources">Resources</a> &middot; <a href="/privacy">Privacy Policy</a> &middot; <a href="/cookies">Cookie Policy</a></footer>
 </body>
 </html>
 """
