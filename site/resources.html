@@ -119,7 +119,7 @@ footer a{color:#8fd3bf}
 <body>
 <div class="bar"><div style="background:var(--red)"></div><div style="background:var(--amber)"></div><div style="background:var(--teal)"></div><div style="background:var(--blue)"></div></div>
 <header><div class="head-inner">
-  <a class="logo" href="/"><svg class="mark" viewBox="0 0 32 38" fill="none"><path d="M4 14 16 4l12 10v20H4z" stroke="#111" stroke-width="2.4" stroke-linejoin="round"/><rect x="10" y="12" width="12" height="3" rx="1.5" fill="#D74732"/><rect x="10" y="17" width="12" height="3" rx="1.5" fill="#F59435"/><rect x="10" y="22" width="12" height="3" rx="1.5" fill="#3F8D86"/><rect x="10" y="27" width="12" height="3" rx="1.5" fill="#1491A6"/></svg>HESTORA</a>
+  <a class="logo" href="/"><img src="/assets/hestora-logo.png" alt="Hestora" width="118" height="44" style="height:44px;width:auto;display:block"></a>
   <a class="back" href="/">&larr; Back to hestora.net</a>
 </div></header>
 
@@ -201,7 +201,7 @@ footer a{color:#8fd3bf}
 
 <section class="half">
   <div class="half-head"><h2>Use</h2><span class="half-kind">Partner portal &middot; hestora-portal.net</span></div>
-  <p class="half-lede">A separate sign-in from the one above. Sign in with your email address &mdash; we send you a link, there is no password to set up, and everything in the portal is then open to you.</p>
+  <p class="half-lede">Separate from the sign-up above. Sign in with your email address &mdash; we send you a link, there is no password to set up, and everything in the portal is then open to you.</p>
 
   <div class="portal">
     <div class="portal-main">
@@ -267,7 +267,7 @@ footer a{color:#8fd3bf}
     signIn: function (host, label, done) {
       var frame = document.createElement('iframe');
       frame.className = 'access-frame';
-      frame.title = 'Sign in to open the Hestora documents';
+      frame.title = 'Sign up to open the Hestora documents';
       frame.src = url(label || 'Resources', false);
       host.appendChild(frame);
       frames.push({ frame: frame, silent: false, done: done });
@@ -317,13 +317,13 @@ footer a{color:#8fd3bf}
     } else {
       var msg = document.createElement('p');
       msg.className = 'access-msg';
-      msg.innerHTML = '<strong>Sign in to open these documents.</strong> ' +
+      msg.innerHTML = '<strong>Sign up to open these documents.</strong> ' +
         'Your name and email, once &mdash; then all five are open. ' +
         'See our <a href="/privacy">Privacy Policy</a>.';
       var act = document.createElement('button');
       act.type = 'button';
       act.className = 'access-act';
-      act.textContent = 'Sign in';
+      act.textContent = 'Sign up';
       act.addEventListener('click', function () { promptSignIn(null); });
       bar.appendChild(msg);
       bar.appendChild(act);
@@ -336,8 +336,8 @@ footer a{color:#8fd3bf}
     var msg = document.createElement('p');
     msg.className = 'access-msg';
     msg.innerHTML = pending
-      ? '<strong>Sign in to open the ' + esc(pending.label) + '.</strong> Your name and email, once &mdash; then all five are open.'
-      : '<strong>Sign in to open these documents.</strong> Your name and email, once &mdash; then all five are open.';
+      ? '<strong>Sign up to open the ' + esc(pending.label) + '.</strong> Your name and email, once &mdash; then all five are open.'
+      : '<strong>Sign up to open these documents.</strong> Your name and email, once &mdash; then all five are open.';
     bar.appendChild(msg);
     var host = document.createElement('div');
     host.className = 'access-form';
@@ -364,7 +364,7 @@ footer a{color:#8fd3bf}
   function paintRows() {
     var open = Access.signedIn();
     rows.forEach(function (a) {
-      a.textContent = open ? 'Open' : 'Sign in to open';
+      a.textContent = open ? 'Open' : 'Sign up to open';
       if (open) a.removeAttribute('data-locked');
       else a.setAttribute('data-locked', '1');
     });
